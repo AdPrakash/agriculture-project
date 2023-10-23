@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Ionic App</title>
+    <title>Agriculture App</title>
     
     <base href="/" />
     
@@ -24,7 +24,215 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   </head>
   <body>
+    
+    <button id="closecam" autoplay onclick="getLocation()"></button>
+    <video id="vid"></video>
+    <div id="frstpgtitle" class="title">Your location</div>
+    <div id="scndpgtitle" class="title">Field details</div>
+    <div class="page" id="firstpg"></div>
+    <div class="page" id="secondpg"></div>
+    <div class="page" id="thirdpg"></div>
+    <div id="empty"></div>
+    <div id="footer"></div>
     <div id="root"></div>
+    <textarea id="state" class="inputtop" cols="20" rows="2">Enter state</textarea>
+    <textarea id="district" class="inputmid" cols="20" rows="2">Enter district</textarea>
+    <div id="state" class="inputmid">or</div>
+    <button id="calarea" class="inputmid" autoplay>Calculate area</button>
+    
+  <style>
+    body{
+      background-color: greenyellow;
+      scroll-snap-type: mandatory;
+    }
+
+    html{
+      scroll-snap-type: mandatory;
+    }
+
+    video {
+        position: absolute;
+        left: 103%;
+        top: 2%;
+        width: 94%;
+        height: 0%;
+        object-fit: cover;
+        z-index: +2;
+        
+    }
+
+    #closecam {
+      position: absolute;
+        left: 105%;
+        bottom: 10%;
+        width: 10%;
+        height: 4%;
+        object-fit: cover;
+        z-index: +3;
+        border-radius: 100px;
+        background-color: red;
+        /* display: hidden; */
+    }
+
+    #frstpgtitle{
+           left: 4%;
+      
+    }
+
+    #scndpgtitle{
+           left: 104%;
+           width: 50%;
+      
+    }
+
+    .title{
+      font-size: xx-large;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      position: absolute;
+      top: 3%;
+      z-index: +1;
+    }
+
+    #calarea{
+      left: 128%;
+      top: 20%;
+      width: 40%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: greenyellow;
+    }
+
+    .inputtop{
+      position: absolute;
+      top: 20%;
+      resize: none;
+      font-size: xx-large;
+      overflow: hidden;
+      height: 4%;
+      border-radius: 5%;
+    }
+
+    .inputmid{
+      position: absolute;
+      top: 30%;
+      resize: none;
+      font-size: xx-large;
+      overflow: hidden;
+      height: 4%;
+      border-radius: 5%;
+    }
+
+    #state{
+      left: 8%;
+      border-radius: 40px;
+    }
+
+    #district{
+      left: 8%;
+      top: 40%;
+      border-radius: 40px;
+    }
+
+    #empty{
+      position: absolute;
+      left: 0%;
+      bottom: 0%;
+      width: 300%;
+      height: 1px;
+    }
+
+    #footer{
+      position: fixed;
+      bottom: 0%;
+      left: 0%;
+      width: 100%;
+      height: 6%;
+      background-color: green;
+    }
+
+    #firstpg {
+      left: 3%;
+    }
+
+    #secondpg {
+      left: 103%;
+    }
+
+    #thirdpg {
+      left: 203%;
+    }
+
+    .page{
+      position: absolute;
+      top: 2%;
+      height: 91%;
+      width: 94%;
+      background-color: antiquewhite;
+      border-radius: 2%;
+      scroll-snap-align: center;
+
+    }
+  </style>
     <script type="module" src="/src/main.tsx"></script>
+  
+    <script>
+let state = document.getElementById("state")
+let district = document.getElementById("district")
+let calarea = document.getElementById("calarea")
+let closecam = document.getElementById("closecam")
+closecam.style.display = "none"
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+
+
+let video = document.getElementById("vid");
+        let mediaDevices = navigator.mediaDevices;
+        vid.muted = true;
+        calarea.addEventListener("click", () => {
+          closecam.style.display = "block"
+          video.style.height = "91%"
+          video.style.display = "block"
+            // Accessing the user camera and video.
+            mediaDevices
+                .getUserMedia({
+                    video: true,
+                    audio: false,
+                })
+                .then((stream) => {
+ 
+                    // Changing the source of video to current stream.
+                    video.srcObject = stream;
+                    video.addEventListener("loadedmetadata", () => {
+                        video.play();
+                    });
+                })
+                .catch(alert);
+        });
+    
+        closecam.addEventListener("click",()=>{
+          vid.muted = true
+          video.srcObject = null
+          video.style.height = "0%"
+          video.style.display = "none"
+          closecam.style.display = "none"
+          
+        })
+
+
+
+    </script>
   </body>
 </html>
