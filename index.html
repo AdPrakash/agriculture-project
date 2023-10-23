@@ -25,9 +25,9 @@
   </head>
   <body>
     
-    <button id="closecam" autoplay onclick="getLocation()"></button>
+    <button id="closecam" autoplay></button>
     <video id="vid"></video>
-    <div id="frstpgtitle" class="title">Your location</div>
+    <div id="frstpgtitle" class="title">Your Location</div>
     <div id="scndpgtitle" class="title">Field details</div>
     <div class="page" id="firstpg"></div>
     <div class="page" id="secondpg"></div>
@@ -37,8 +37,12 @@
     <div id="root"></div>
     <textarea id="state" class="inputtop" cols="20" rows="2">Enter state</textarea>
     <textarea id="district" class="inputmid" cols="20" rows="2">Enter district</textarea>
+    <textarea id="area" class="inputtop" cols="20" rows="2">Enter area of field</textarea>
+    <textarea id="prvcrops" class="inputmid" cols="20" rows="2">crops grown earlier</textarea>
+    <div id="area" class="inputmid">or</div>
     <div id="state" class="inputmid">or</div>
     <button id="calarea" class="inputmid" autoplay>Calculate area</button>
+    <button id="getloc" class="inputmid">get location</button>
     
   <style>
     body{
@@ -81,7 +85,7 @@
 
     #scndpgtitle{
            left: 104%;
-           width: 50%;
+           width: 40%;
       
     }
 
@@ -93,14 +97,32 @@
       z-index: +1;
     }
 
+    #area{
+      left: 114%;
+    }
+
     #calarea{
-      left: 128%;
-      top: 20%;
+      left: 134%;
       width: 40%;
       height: 5%;
       font-size: larger;
       border-radius: 20px;
       background-color: greenyellow;
+    }
+
+    
+    #getloc{
+      left: 34%;
+      width: 40%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: greenyellow;
+    }
+
+    #prvcrops{
+      top: 40%;
+      left: 114%;
     }
 
     .inputtop{
@@ -124,14 +146,12 @@
     }
 
     #state{
-      left: 8%;
-      border-radius: 40px;
+      left: 14%;
     }
 
     #district{
-      left: 8%;
+      left: 14%;
       top: 40%;
-      border-radius: 40px;
     }
 
     #empty{
@@ -175,28 +195,39 @@
     }
   </style>
     <script type="module" src="/src/main.tsx"></script>
-  
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script>
     <script>
 let state = document.getElementById("state")
+let getloc = document.getElementById("getloc")
 let district = document.getElementById("district")
 let calarea = document.getElementById("calarea")
 let closecam = document.getElementById("closecam")
 closecam.style.display = "none"
+getloc.addEventListener("click",() => {
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else { 
-    alert("Geolocation is not supported by this browser.");
-  }
-}
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(showLocation)
+    }
+    else{
+      console.log("some issue was present")
+    }
+})
 
-function showPosition(position) {
-  x.innerHTML = "Latitude: " + position.coords.latitude +
-  "<br>Longitude: " + position.coords.longitude;
-}
-
-
+const showLocation = async (position) => {
+  //We user the NOminatim API for getting actual addres from latitude and longitude
+  let response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
+  );
+  //store response object
+  let data = await response.json();
+  state.innerHTML = data.address.state
+  district.innerHTML = data.address.state_district
+  console.log(data.address)
+  // locationDiv.innerText = `${data.address.city}, ${data.address.country}`;
+};
 
 let video = document.getElementById("vid");
         let mediaDevices = navigator.mediaDevices;
