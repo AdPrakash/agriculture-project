@@ -39,10 +39,11 @@
     <textarea id="district" class="inputmid" cols="20" rows="2">Enter district</textarea>
     <textarea id="area" class="inputtop" cols="20" rows="2">Enter area of field</textarea>
     <textarea id="prvcrops" class="inputmid" cols="20" rows="2">crops grown earlier</textarea>
-    <div id="area" class="inputmid">or</div>
-    <div id="state" class="inputmid">or</div>
+    <div id="area" class="inputmid" class="or">or</div>
+    <div id="state" class="inputmid" class="or">or</div>
     <button id="calarea" class="inputmid" autoplay>Calculate area</button>
     <button id="getloc" class="inputmid">get location</button>
+    <button id="markcoord">START</button>
     
   <style>
     body{
@@ -52,6 +53,18 @@
 
     html{
       scroll-snap-type: mandatory;
+    }
+
+    .or{
+      color: black;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      border-radius: 0%;
+      position: absolute;
+      top: 30%;
+      resize: none;
+      font-size: xx-large;
+      overflow: hidden;
+      height: 4%;
     }
 
     video {
@@ -69,8 +82,8 @@
       position: absolute;
         left: 105%;
         bottom: 10%;
-        width: 10%;
-        height: 4%;
+        width: 15%;
+        aspect-ratio: 1/1;
         object-fit: cover;
         z-index: +3;
         border-radius: 100px;
@@ -78,15 +91,32 @@
         /* display: hidden; */
     }
 
+    #markcoord {
+      position: absolute;
+        left: 140%;
+        bottom: 10%;
+        width: 15%;
+        aspect-ratio: 1/1;
+        font-size: small;
+        text-align: center;
+        object-fit: cover;
+        z-index: +3;
+        border-radius: 100px;
+        background-color: green;
+        /* display: hidden; */
+    }
+
     #frstpgtitle{
            left: 4%;
-      
+           color: black;
+           font-family: 'Courier New', Courier, monospace;
     }
 
     #scndpgtitle{
            left: 104%;
-           width: 40%;
-      
+           width: 50%;
+           color: black;
+
     }
 
     .title{
@@ -98,7 +128,7 @@
     }
 
     #area{
-      left: 114%;
+      left: 108%;
     }
 
     #calarea{
@@ -122,7 +152,7 @@
 
     #prvcrops{
       top: 40%;
-      left: 114%;
+      left: 108%;
     }
 
     .inputtop{
@@ -132,7 +162,7 @@
       font-size: xx-large;
       overflow: hidden;
       height: 4%;
-      border-radius: 5%;
+      border-radius: 30px;
     }
 
     .inputmid{
@@ -142,15 +172,16 @@
       font-size: xx-large;
       overflow: hidden;
       height: 4%;
-      border-radius: 5%;
+      border-radius: 30px;
     }
 
     #state{
-      left: 14%;
+      left: 8%;
+
     }
 
     #district{
-      left: 14%;
+      left: 8%;
       top: 40%;
     }
 
@@ -188,7 +219,7 @@
       top: 2%;
       height: 91%;
       width: 94%;
-      background-color: antiquewhite;
+      background-color: white;
       border-radius: 2%;
       scroll-snap-align: center;
 
@@ -205,7 +236,15 @@ let getloc = document.getElementById("getloc")
 let district = document.getElementById("district")
 let calarea = document.getElementById("calarea")
 let closecam = document.getElementById("closecam")
+let markcoord = document.getElementById("markcoord")
+let sidelat = []
+let sidelon = []
+let permlat = []
+let permlon = []
+let noofside = 0
+
 closecam.style.display = "none"
+markcoord.style.display = "none"
 getloc.addEventListener("click",() => {
 
     if(navigator.geolocation){
@@ -226,7 +265,7 @@ const showLocation = async (position) => {
   state.innerHTML = data.address.state
   district.innerHTML = data.address.state_district
   console.log(data.address)
-  // locationDiv.innerText = `${data.address.city}, ${data.address.country}`;
+
 };
 
 let video = document.getElementById("vid");
@@ -236,10 +275,13 @@ let video = document.getElementById("vid");
           closecam.style.display = "block"
           video.style.height = "91%"
           video.style.display = "block"
+          markcoord.style.display = "block"
             // Accessing the user camera and video.
             mediaDevices
                 .getUserMedia({
-                    video: true,
+                    video: {
+                      facingMode: 'environment'
+                    },
                     audio: false,
                 })
                 .then((stream) => {
@@ -259,8 +301,39 @@ let video = document.getElementById("vid");
           video.style.height = "0%"
           video.style.display = "none"
           closecam.style.display = "none"
-          
+          markcoord.style.display = "none"
         })
+
+      markcoord.addEventListener("click",()=>{
+        navigator.geolocation.getCurrentPosition(storePosition);
+        
+        if(markcoord.innerHTML == "START"){
+          markcoord.innerHTML = "STOP";
+          noofside++
+        }
+        else if (markcoord.innerHTML == "STOP") {
+          markcoord.innerHTML = "START";
+        }
+      })
+
+      function storePosition(position){
+
+        sidelat.push(position.coords.latitude)
+        sidelon.push(position.coords.longitude)
+        if(markcoord.innerHTML == "STOP"){
+          permlat = localStorage.setItem(String(noofside)+"end",sidelat)
+          permlon = localStorage.setItem(String(noofside)+"end",sidelon)
+        }
+        else{
+          permlat = localStorage.setItem(String(noofside),sidelat)
+          permlon = localStorage.setItem(String(noofside),sidelon)
+        }
+        permlat = localStorage.setItem(String(noofside),sidelat)
+        permlon = localStorage.setItem(String(noofside),sidelon)
+        console.log(sidelat,sidelon)
+
+}
+
 
 
 
