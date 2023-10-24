@@ -261,17 +261,24 @@ let closecam = document.getElementById("closecam")
 let markcoord = document.getElementById("markcoord")
 let sidelat = []
 let sidelon = []
-let permlat = []
-let permlon = []
 let noofside = 0
 let marker = document.getElementById("marker")
 let myCanvas = document.getElementById("myCanvas")
 var ctx = myCanvas.getContext("2d");
 var startcounter = 0
-let xpos = localStorage.getItem(String(noofside))
-let ypos = localStorage.getItem(String(noofside)+"lon")
-let xposend = localStorage.getItem(String(noofside)+"end")
-let yposend = localStorage.getItem(String(noofside)+"lon"+"end")
+// let xpos = localStorage.getItem(String(noofside))
+// let ypos = localStorage.getItem(String(noofside)+"lon")
+// let xposend = localStorage.getItem(String(noofside)+"end")
+// let yposend = localStorage.getItem(String(noofside)+"lon"+"end")
+let xposend = Math.floor(sidelat[noofside])
+let yposend = Math.floor(sidelon[noofside])
+let xpos = Math.floor(sidelat[noofside-1])
+let ypos = Math.floor(sidelon[noofside-1])
+let debx = 19.075984
+let deby = 72.877656
+let debxend = 28.6097408
+let debyend = 77.3685248
+
 
 myCanvas.style.display = "none"
 marker.style.display = "none"
@@ -340,43 +347,54 @@ let video = document.getElementById("vid");
         })
 
       markcoord.addEventListener("click",()=>{
-        startcounter++
-  
-
-     
-
         navigator.geolocation.getCurrentPosition(storePosition);
-        
+
+        function storePosition(position){
+          sidelat.push(position.coords.latitude)
+          sidelon.push(position.coords.longitude)
+        }
+        // 
+        startcounter++
+        ctx.lineWidth = "2"
+        ctx.strokeStyle = "black"
+              
         if(markcoord.innerHTML == "START"){
+    
+          ctx.beginPath()
+          // ctx.moveTo(debx,deby)
+          ctx.moveTo(sidelat[noofside],sidelon[noofside])
+          console.log("noofside",noofside)
+          console.log("start ",sidelat[noofside],sidelon[noofside])
           markcoord.innerHTML = "STOP";
-          noofside++
-          ctx.lineTo(xposend,yposend)
-          ctx.stroke()
         }
         else if (markcoord.innerHTML == "STOP") {
+          noofside++
+          // ctx.lineTo(debxend,debyend)
+          ctx.lineTo(sidelat[noofside+1],sidelon[noofside+1])
+          debx+=5
+          deby+=5
+          debxend+=10
+          debyend+=10
+          console.log("noofside",noofside)
+          console.log("stop ",sidelat[noofside+1], sidelon[noofside+1])
           markcoord.innerHTML = "START";
-          ctx.beginPath()
-          ctx.lineWidth = "5"
-          ctx.strokeStyle = "black"
-          ctx.moveTo(xpos,ypos)
         }
+        ctx.stroke()
+
       })
 
-      function storePosition(position){
+// function storePosition(position){
 
-        sidelat.push(position.coords.latitude)
-        sidelon.push(position.coords.longitude)
-        if(markcoord.innerHTML == "START"){
-          permlat = localStorage.setItem(String(noofside)+"end",position.coords.latitude)
-          permlon = localStorage.setItem(String(noofside)+"lon"+"end",position.coords.longitude)
-        }
-        else{
-          permlat = localStorage.setItem(String(noofside),position.coords.latitude)
-          permlon = localStorage.setItem(String(noofside)+"lon",position.coords.longitude)
-        }
-        console.log(sidelat,sidelon)
+// if(markcoord.innerHTML == "START"){
+//   permlat = localStorage.setItem(String(noofside)+"end",position.coords.latitude)
+//   permlon = localStorage.setItem(String(noofside)+"lon"+"end",position.coords.longitude)
+// }
+// else{
+//   permlat = localStorage.setItem(String(noofside),position.coords.latitude)
+//   permlon = localStorage.setItem(String(noofside)+"lon",position.coords.longitude)
+// }
+// }
 
-}
 
 
 
