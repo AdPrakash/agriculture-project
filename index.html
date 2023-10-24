@@ -363,6 +363,7 @@ let video = document.getElementById("vid");
           ctx.moveTo(sidelat[noofside-1],sidelon[noofside-1])
           console.log("noofside",noofside)
           console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
+          alert("start "+String(sidelat[noofside-1])+" "+String(sidelon[noofside-1]))
           markcoord.innerHTML = "STOP";
         }
         else if (markcoord.innerHTML == "STOP") {
@@ -375,6 +376,7 @@ let video = document.getElementById("vid");
           // debyend+=10
           console.log("noofside",noofside)
           console.log("stop ",sidelat[noofside], sidelon[noofside])
+          alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
           markcoord.innerHTML = "START";
         }
         ctx.stroke()
