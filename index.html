@@ -352,34 +352,37 @@ let video = document.getElementById("vid");
         function storePosition(position){
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
-        }
-        // 
-        startcounter++
-        ctx.lineWidth = "2"
-        ctx.strokeStyle = "black"
+        
+          ctx.lineWidth = "2"
+          ctx.strokeStyle = "black"
               
         if(markcoord.innerHTML == "START"){
-    
+          noofside++
           ctx.beginPath()
           // ctx.moveTo(debx,deby)
-          ctx.moveTo(sidelat[noofside],sidelon[noofside])
+          ctx.moveTo(sidelat[noofside-1],sidelon[noofside-1])
           console.log("noofside",noofside)
-          console.log("start ",sidelat[noofside],sidelon[noofside])
+          console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
           markcoord.innerHTML = "STOP";
         }
         else if (markcoord.innerHTML == "STOP") {
-          noofside++
+          
           // ctx.lineTo(debxend,debyend)
-          ctx.lineTo(sidelat[noofside+1],sidelon[noofside+1])
-          debx+=5
-          deby+=5
-          debxend+=10
-          debyend+=10
+          ctx.lineTo(sidelat[noofside],sidelon[noofside])
+          // debx+=5
+          // deby+=5
+          // debxend+=10
+          // debyend+=10
           console.log("noofside",noofside)
-          console.log("stop ",sidelat[noofside+1], sidelon[noofside+1])
+          console.log("stop ",sidelat[noofside], sidelon[noofside])
           markcoord.innerHTML = "START";
         }
         ctx.stroke()
+        
+        }
+        // 
+        startcounter++
+        
 
       })
 
