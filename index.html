@@ -42,16 +42,66 @@
     <button id="calarea" class="inputmid" autoplay>Map your field</button>
     <button id="getloc" class="inputmid">get location</button>
     <button id="markcoord">START</button>
+    <button id="next" class="inputmid">Next</button>
+    <!-- <button id="previous" class="inputmid">Previous</button> -->
+    <button id="next2" class="inputmid">Next</button>
+    <button id="previous2" class="inputmid">Previous</button>
     <canvas id="myCanvas"></canvas>
     
   <style>
     body{
       background-color: greenyellow;
       scroll-snap-type: mandatory;
+      /* overflow: hidden; */
     }
 
     html{
       scroll-snap-type: mandatory;
+      scroll-behavior: smooth;
+    }
+
+    #next {
+      top: 50%;
+      left: 53%;
+      width: 30%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: greenyellow;
+      z-index: +10;
+    }
+
+    #previous {
+      top: 50%;
+      left: 13%;
+      width: 30%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: greenyellow;
+      z-index: +10;
+    }
+
+    #next2 {
+      top: 25%;
+      left: 153%;
+      width: 30%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: greenyellow;
+      z-index: +10;
+    }
+
+    #previous2 {
+      top: 25%;
+      left: 113%;
+      width: 30%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: greenyellow;
+      z-index: +10;
     }
 
     .or{
@@ -164,7 +214,7 @@
 
     
     #getloc{
-      left: 34%;
+      left: 28%;
       width: 40%;
       height: 5%;
       font-size: larger;
@@ -279,7 +329,36 @@ let debx = 19.075984
 let deby = 72.877656
 let debxend = 28.6097408
 let debyend = 77.3685248
-let id;
+let nextcounter = 0
+let scrolltarget = screen.width
+let next = document.getElementById("next")
+let previous2 = document.getElementById("previous2")
+let next2 = document.getElementById("next2")
+
+next.addEventListener("click",()=>{
+
+window.scrollTo(scrolltarget,0)
+scrolltarget += screen.width
+nextcounter+=1
+console.log(nextcounter)
+})
+
+next2.addEventListener("click",()=>{
+
+window.scrollTo(scrolltarget,0)
+scrolltarget += screen.width
+nextcounter+=1
+console.log(nextcounter)
+})
+
+previous2.addEventListener("click",()=>{
+
+window.scrollTo(-scrolltarget,0)
+scrolltarget -= screen.width
+nextcounter-=1
+console.log(nextcounter)
+})
+
 
 myCanvas.style.display = "none"
 marker.style.display = "none"
@@ -398,7 +477,7 @@ let video = document.getElementById("vid");
         
     function options (){
     enableHighAccuracy: true
-    timeout: 5000
+    // timeout: 5000
   // maximumAge: 0,
     }
 
