@@ -279,7 +279,7 @@ let debx = 19.075984
 let deby = 72.877656
 let debxend = 28.6097408
 let debyend = 77.3685248
-
+let id;
 
 myCanvas.style.display = "none"
 marker.style.display = "none"
@@ -345,10 +345,11 @@ let video = document.getElementById("vid");
           closecam.style.display = "none"
           markcoord.style.display = "none"
           marker.style.display = "none"
+          // navigator.geolocation.clearWatch(id);
         })
 
       markcoord.addEventListener("click",()=>{
-        navigator.geolocation.getCurrentPosition(storePosition);
+        navigator.geolocation.getCurrentPosition(storePosition, error, options);
 
         function storePosition(position){
           sidelat.push(position.coords.latitude)
@@ -395,6 +396,15 @@ let video = document.getElementById("vid");
         // 
         startcounter++
         
+    function options (){
+    enableHighAccuracy: true
+    timeout: 5000
+  // maximumAge: 0,
+    }
+
+function error(err) {
+  console.error(`ERROR(${err.code}): ${err.message}`);
+}
 
       })
 
