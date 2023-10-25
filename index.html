@@ -428,8 +428,10 @@ let video = document.getElementById("vid");
         })
 
       markcoord.addEventListener("click",()=>{
+      
+        if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(storePosition, error, options);
-
+        }
         function storePosition(position){
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
