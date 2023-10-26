@@ -434,9 +434,10 @@ let video = document.getElementById("vid");
         id = navigator.geolocation.watchPosition(storePosition, error, options);
         }
         function storePosition(position){
-          sidelat.push(position.coords.latitude)
-          sidelon.push(position.coords.longitude)
-          navigator.geolocation.clearWatch(id);
+          // sidelat.push(position.coords.latitude)
+          //sidelon.push(position.coords.longitude)
+          alert(String(position.coords.latitude)+" "+String(position.coords.longitude))
+          // navigator.geolocation.clearWatch(id);
           ctx.lineWidth = "2"
           ctx.strokeStyle = "black"
               
@@ -482,8 +483,8 @@ let video = document.getElementById("vid");
         
     function options (){
     enableHighAccuracy: true
-    timeout: 5000
-    maximumAge: 0;
+    // timeout: 5000
+    // maximumAge: 0;
     }
 
 function error(err) {
