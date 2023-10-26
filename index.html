@@ -415,6 +415,11 @@ let popup = document.getElementById("popup")
 let profileicon = document.getElementById("profileicon")
 let newbut = document.getElementById('newbut')
 let popupcount = 0;
+let maxX;
+let maxY;
+let cachesidelat = []
+let cachesidelon = []
+
 popup.style.display = "none"
 
 newbut.addEventListener("click",()=>{
@@ -499,7 +504,10 @@ let video = document.getElementById("vid");
         function storePosition(position){
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
+          cachesidelat.push(position.coords.latitude*5)
+          cachesidelon.push(position.coords.longitude*5)
           console.log(sidelat," ",sidelon)
+          alert(String(sidelat[sidelat.length-1])+" "+String(sidelon[sidelon.length-1]))
         }
         function options (){
         enableHighAccuracy: true
@@ -537,6 +545,9 @@ let video = document.getElementById("vid");
         });
     
         closecam.addEventListener("click",()=>{
+          maxX = (Math.max(...sidelat))/2
+          maxY = (Math.max(...sidelon))/2
+          ctx.translate((myCanvas.width/2)-maxX,(myCanvas.height/2)-maxY)
           vid.muted = true
           video.srcObject = null
           video.style.height = "0%"
@@ -585,7 +596,7 @@ let video = document.getElementById("vid");
 
           console.log(cachelat2,cachelon2)
 
-          ctx.lineTo(sidelat[sidelat.length-1]*2,sidelon[sidelon.length-1]*2)
+          ctx.lineTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
           // debx+=5
           // deby+=5
           // debxend+=10
