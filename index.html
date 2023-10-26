@@ -419,6 +419,7 @@ let maxX;
 let maxY;
 let cachesidelat = []
 let cachesidelon = []
+let hope;
 
 popup.style.display = "none"
 
@@ -498,7 +499,7 @@ let video = document.getElementById("vid");
         calarea.addEventListener("click", () => {
 
           if(navigator.geolocation){
-         setInterval(() => {navigator.geolocation.watchPosition(storePosition, error, options)},10000);
+         hope = setInterval(() => {navigator.geolocation.getCurrentPosition(storePosition, error, options)},1000);
         }
 
         function storePosition(position){
@@ -545,9 +546,10 @@ let video = document.getElementById("vid");
         });
     
         closecam.addEventListener("click",()=>{
-          maxX = (Math.max(...sidelat))/2
-          maxY = (Math.max(...sidelon))/2
-          ctx.translate((myCanvas.width/2)-maxX,(myCanvas.height/2)-maxY)
+          // maxX = (Math.max(...sidelat))/2
+          // maxY = (Math.max(...sidelon))/2
+          // ctx.translate((myCanvas.width/2)-maxX,(myCanvas.height/2)-maxY)
+          clearInterval(hope)
           vid.muted = true
           video.srcObject = null
           video.style.height = "0%"
@@ -581,6 +583,7 @@ let video = document.getElementById("vid");
           cachelat = sidelat[sidelat.length-1]
           cachelon = sidelon[sidelon.length-1]
           console.log(cachelat,cachelon)
+          // alert("switch off device's location and switch on again when reach the ending corner")
           // console.log("noofside",noofside)
           // console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
           // console.log("start ",sidelat,sidelon)
@@ -596,7 +599,7 @@ let video = document.getElementById("vid");
 
           console.log(cachelat2,cachelon2)
 
-          ctx.lineTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
+          ctx.lineTo(sidelat[sidelat.length-1]*2,sidelon[sidelon.length-1]*2)
           // debx+=5
           // deby+=5
           // debxend+=10
