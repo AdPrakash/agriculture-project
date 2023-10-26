@@ -298,11 +298,36 @@
     }
   </style>
     <script type="module" src="/src/main.tsx"></script>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
-      defer
-    ></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/haversine-distance@1.2.1/index.min.js"></script> -->
     <script>
+
+const asin = Math.asin
+const cos = Math.cos
+const sin = Math.sin
+const sqrt = Math.sqrt
+const PI = Math.PI
+
+// equatorial mean radius of Earth (in meters)
+const R = 6378137
+
+function squared (x) { return x * x }
+function toRad (x) { return x * PI / 180.0 }
+function hav (x) {
+  return squared(sin(x / 2))
+}
+
+// hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
+function haversineDistance (a, b) {
+  const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
+  const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
+  const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
+  const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
+
+  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
+  return 2 * R * asin(sqrt(ht))
+}
+
+
 let state = document.getElementById("state")
 let getloc = document.getElementById("getloc")
 let district = document.getElementById("district")
@@ -335,6 +360,13 @@ let next = document.getElementById("next")
 let previous2 = document.getElementById("previous2")
 let next2 = document.getElementById("next2")
 let id;
+let cachelat;
+let cachelon;
+let cachelat2;
+let cachelon2;
+let delcachelat = cachelat2-cachelat;
+let delcachelon = cachelon2-cachelon;
+
 
 next.addEventListener("click",()=>{
 
@@ -468,9 +500,12 @@ let video = document.getElementById("vid");
           ctx.beginPath()
           // ctx.moveTo(debx,deby)
           ctx.moveTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
-          console.log("noofside",noofside)
-          console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
-          console.log("start ",sidelat,sidelon)
+          cachelat = sidelat[sidelat.length-1]
+          cachelon = sidelon[sidelon.length-1]
+          console.log(cachelat,cachelon)
+          // console.log("noofside",noofside)
+          // console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
+          // console.log("start ",sidelat,sidelon)
           // alert("start "+String(sidelat[noofside-1])+" "+String(sidelon[noofside-1]))
           markcoord.innerHTML = "STOP";
         }
@@ -478,7 +513,12 @@ let video = document.getElementById("vid");
           // sidelat.push(position.coords.latitude)
           // sidelon.push(position.coords.longitude)
           // ctx.lineTo(debxend,debyend)
-          ctx.lineTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
+          cachelat2 = sidelat[sidelat.length-1]
+          cachelon2 = sidelon[sidelon.length-1]
+
+          console.log(cachelat2,cachelon2)
+
+          ctx.lineTo(sidelat[sidelat.length-1]*10,sidelon[sidelon.length-1]*10)
           // debx+=5
           // deby+=5
           // debxend+=10
@@ -487,15 +527,12 @@ let video = document.getElementById("vid");
           console.log("stop ",sidelat[noofside], sidelon[noofside])
           console.log("stop ",sidelat,sidelon)
           // alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
-
-          let a = Math.sin(((sidelat[noofside]-sidelat[noofside-1])*Math.PI/180)/2)*Math.sin(((sidelat[noofside]-sidelat[noofside-1])*Math.PI/180)/2)+Math.cos(sidelat[noofside]*Math.PI/180)*Math.cos(sidelat[noofside-1]*Math.PI/180)*Math.sin(((sidelon[noofside]-sidelon[noofside-1])*Math.PI/180)/2)*Math.sin(((sidelon[noofside]-sidelon[noofside-1])*Math.PI/180)/2);
-
-          let c = 2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))
-
-          let d = 6371e3*c //in metres
           
-          console.log(d)
-          alert("distance is "+String(d)+" metres")
+          let a = { latitude: cachelat, longitude: cachelon }
+          let b = { latitude: cachelat2, longitude: cachelon2 }
+
+          console.log(haversineDistance(a, b))
+          alert("distance is "+String(haversineDistance(a, b))+" metres")
           markcoord.innerHTML = "START";
         }
         ctx.stroke()
@@ -503,34 +540,9 @@ let video = document.getElementById("vid");
         // }
         // 
         startcounter++
-        
-//     function options (){
-//     enableHighAccuracy: true
-//     // timeout: 5000
-//     // maximumAge: 0;
-//     }
 
-// function error(err) {
-//   console.error(`ERROR(${err.code}): ${err.message}`);
-// }
 
       })
-
-// function storePosition(position){
-
-// if(markcoord.innerHTML == "START"){
-//   permlat = localStorage.setItem(String(noofside)+"end",position.coords.latitude)
-//   permlon = localStorage.setItem(String(noofside)+"lon"+"end",position.coords.longitude)
-// }
-// else{
-//   permlat = localStorage.setItem(String(noofside),position.coords.latitude)
-//   permlon = localStorage.setItem(String(noofside)+"lon",position.coords.longitude)
-// }
-// }
-
-
-
-
 
     </script>
   </body>
