@@ -334,6 +334,7 @@ let scrolltarget = screen.width
 let next = document.getElementById("next")
 let previous2 = document.getElementById("previous2")
 let next2 = document.getElementById("next2")
+let id;
 
 next.addEventListener("click",()=>{
 
@@ -430,12 +431,12 @@ let video = document.getElementById("vid");
       markcoord.addEventListener("click",()=>{
       
         if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(storePosition, error, options);
+        id = navigator.geolocation.watchPosition(storePosition, error, options);
         }
         function storePosition(position){
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
-        
+          navigator.geolocation.clearWatch(id);
           ctx.lineWidth = "2"
           ctx.strokeStyle = "black"
               
@@ -446,6 +447,7 @@ let video = document.getElementById("vid");
           ctx.moveTo(sidelat[noofside-1],sidelon[noofside-1])
           console.log("noofside",noofside)
           console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
+          console.log("start ",sidelat,sidelon)
           alert("start "+String(sidelat[noofside-1])+" "+String(sidelon[noofside-1]))
           markcoord.innerHTML = "STOP";
         }
@@ -459,6 +461,7 @@ let video = document.getElementById("vid");
           // debyend+=10
           console.log("noofside",noofside)
           console.log("stop ",sidelat[noofside], sidelon[noofside])
+          console.log("stop ",sidelat,sidelon)
           alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
 
           let a = Math.sin(((sidelat[noofside]-sidelat[noofside-1])*Math.PI/180)/2)*Math.sin(((sidelat[noofside]-sidelat[noofside-1])*Math.PI/180)/2)+Math.cos(sidelat[noofside]*Math.PI/180)*Math.cos(sidelat[noofside-1]*Math.PI/180)*Math.sin(((sidelon[noofside]-sidelon[noofside-1])*Math.PI/180)/2)*Math.sin(((sidelon[noofside]-sidelon[noofside-1])*Math.PI/180)/2);
