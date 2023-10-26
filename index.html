@@ -498,7 +498,7 @@ let video = document.getElementById("vid");
         calarea.addEventListener("click", () => {
 
           if(navigator.geolocation){
-        id = navigator.geolocation.watchPosition(storePosition, error, options);
+         setInterval(() => {navigator.geolocation.watchPosition(storePosition, error, options)},10000);
         }
 
         function storePosition(position){
@@ -507,7 +507,7 @@ let video = document.getElementById("vid");
           cachesidelat.push(position.coords.latitude*5)
           cachesidelon.push(position.coords.longitude*5)
           console.log(sidelat," ",sidelon)
-          alert(String(sidelat[sidelat.length-1])+" "+String(sidelon[sidelon.length-1]))
+          // alert(String(sidelat[sidelat.length-1])+" "+String(sidelon[sidelon.length-1]))
         }
         function options (){
         enableHighAccuracy: true
