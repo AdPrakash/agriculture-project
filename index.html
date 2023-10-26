@@ -392,6 +392,26 @@ let video = document.getElementById("vid");
         let mediaDevices = navigator.mediaDevices;
         vid.muted = true;
         calarea.addEventListener("click", () => {
+
+          if(navigator.geolocation){
+        id = navigator.geolocation.watchPosition(storePosition, error, options);
+        }
+
+        function storePosition(position){
+          sidelat.push(position.coords.latitude)
+          sidelon.push(position.coords.longitude)
+          console.log(sidelat," ",sidelon)
+        }
+        function options (){
+        enableHighAccuracy: true
+        // timeout: 5000
+        // maximumAge: 0;
+        }
+
+        function error(err) {
+        console.error(`ERROR(${err.code}): ${err.message}`);
+        }
+
           myCanvas.style.display = "block"
           marker.style.display = "block"
           closecam.style.display = "block"
@@ -430,35 +450,35 @@ let video = document.getElementById("vid");
 
       markcoord.addEventListener("click",()=>{
       
-        if(navigator.geolocation){
-        id = navigator.geolocation.watchPosition(storePosition, error, options);
-        }
-        function storePosition(position){
-          // sidelat.push(position.coords.latitude)
-          //sidelon.push(position.coords.longitude)
-          alert(String(position.coords.latitude)+" "+String(position.coords.longitude))
+        // if(navigator.geolocation){
+        // id = navigator.geolocation.watchPosition(storePosition, error, options);
+        // }
+        // function storePosition(position){
+        //   sidelat.push(position.coords.latitude)
+        //   sidelon.push(position.coords.longitude)
+        //   console.log(sidelat," ",sidelon)
+          // alert(String(position.coords.latitude)+" "+String(position.coords.longitude))
           // navigator.geolocation.clearWatch(id);
           ctx.lineWidth = "2"
           ctx.strokeStyle = "black"
               
         if(markcoord.innerHTML == "START"){
           noofside++
-          sidelat.push(position.coords.latitude)
-          sidelon.push(position.coords.longitude)
+
           ctx.beginPath()
           // ctx.moveTo(debx,deby)
-          ctx.moveTo(sidelat[noofside-1],sidelon[noofside-1])
+          ctx.moveTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
           console.log("noofside",noofside)
           console.log("start ",sidelat[noofside-1],sidelon[noofside-1])
           console.log("start ",sidelat,sidelon)
-          alert("start "+String(sidelat[noofside-1])+" "+String(sidelon[noofside-1]))
+          // alert("start "+String(sidelat[noofside-1])+" "+String(sidelon[noofside-1]))
           markcoord.innerHTML = "STOP";
         }
         else if (markcoord.innerHTML == "STOP") {
-          sidelat.push(position.coords.latitude)
-          sidelon.push(position.coords.longitude)
+          // sidelat.push(position.coords.latitude)
+          // sidelon.push(position.coords.longitude)
           // ctx.lineTo(debxend,debyend)
-          ctx.lineTo(sidelat[noofside],sidelon[noofside])
+          ctx.lineTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
           // debx+=5
           // deby+=5
           // debxend+=10
@@ -466,7 +486,7 @@ let video = document.getElementById("vid");
           console.log("noofside",noofside)
           console.log("stop ",sidelat[noofside], sidelon[noofside])
           console.log("stop ",sidelat,sidelon)
-          alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
+          // alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
 
           let a = Math.sin(((sidelat[noofside]-sidelat[noofside-1])*Math.PI/180)/2)*Math.sin(((sidelat[noofside]-sidelat[noofside-1])*Math.PI/180)/2)+Math.cos(sidelat[noofside]*Math.PI/180)*Math.cos(sidelat[noofside-1]*Math.PI/180)*Math.sin(((sidelon[noofside]-sidelon[noofside-1])*Math.PI/180)/2)*Math.sin(((sidelon[noofside]-sidelon[noofside-1])*Math.PI/180)/2);
 
@@ -480,19 +500,19 @@ let video = document.getElementById("vid");
         }
         ctx.stroke()
         
-        }
+        // }
         // 
         startcounter++
         
-    function options (){
-    enableHighAccuracy: true
-    // timeout: 5000
-    // maximumAge: 0;
-    }
+//     function options (){
+//     enableHighAccuracy: true
+//     // timeout: 5000
+//     // maximumAge: 0;
+//     }
 
-function error(err) {
-  console.error(`ERROR(${err.code}): ${err.message}`);
-}
+// function error(err) {
+//   console.error(`ERROR(${err.code}): ${err.message}`);
+// }
 
       })
 
