@@ -443,6 +443,8 @@ let video = document.getElementById("vid");
               
         if(markcoord.innerHTML == "START"){
           noofside++
+          sidelat.push(position.coords.latitude)
+          sidelon.push(position.coords.longitude)
           ctx.beginPath()
           // ctx.moveTo(debx,deby)
           ctx.moveTo(sidelat[noofside-1],sidelon[noofside-1])
@@ -453,7 +455,8 @@ let video = document.getElementById("vid");
           markcoord.innerHTML = "STOP";
         }
         else if (markcoord.innerHTML == "STOP") {
-          
+          sidelat.push(position.coords.latitude)
+          sidelon.push(position.coords.longitude)
           // ctx.lineTo(debxend,debyend)
           ctx.lineTo(sidelat[noofside],sidelon[noofside])
           // debx+=5
