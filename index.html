@@ -349,62 +349,32 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/haversine-distance@1.2.1/index.min.js"></script> -->
     <script>
 
-// const asin = Math.asin
-// const cos = Math.cos
-// const sin = Math.sin
-// const sqrt = Math.sqrt
-// const PI = Math.PI
+const asin = Math.asin
+const cos = Math.cos
+const sin = Math.sin
+const sqrt = Math.sqrt
+const PI = Math.PI
 
-// // equatorial mean radius of Earth (in meters)
-// const R = 6378137
+// equatorial mean radius of Earth (in meters)
+const R = 6378137
 
-// function squared (x) { return x * x }
-// function toRad (x) { return x * PI / 180.0 }
-// function hav (x) {
-//   return squared(sin(x / 2))
-// }
-
-// // hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
-// function haversineDistance (a, b) {
-//   const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
-//   const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
-//   const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
-//   const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
-
-//   const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
-//   return 2 * R * asin(sqrt(ht))
-// }
-
-function latLonToXYZ(latlon, R){
-  const xyz = {x:0, y:0, z:0}
-  xyz.y = Math.sin(degToRad(latlon.latitude))*R;
-  const r = Math.cos(degToRad(latlon.latitude))*R;
-  xyz.x = Math.sin(degToRad(latlon.longitude))*r;
-  xyz.z = Math.cos(degToRad(latlon.longitude))*r;
-  return xyz;
-
+function squared (x) { return x * x }
+function toRad (x) { return x * PI / 180.0 }
+function hav (x) {
+  return squared(sin(x / 2))
 }
 
-function degToRad(degree){
-  return degree*Math.PI/180;
+// hav(theta) = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLon - aLon)
+function haversineDistance (a, b) {
+  const aLat = toRad(Array.isArray(a) ? a[1] : a.latitude || a.lat)
+  const bLat = toRad(Array.isArray(b) ? b[1] : b.latitude || b.lat)
+  const aLng = toRad(Array.isArray(a) ? a[0] : a.longitude || a.lng || a.lon)
+  const bLng = toRad(Array.isArray(b) ? b[0] : b.longitude || b.lng || b.lon)
+
+  const ht = hav(bLat - aLat) + cos(aLat) * cos(bLat) * hav(bLng - aLng)
+  return 2 * R * asin(sqrt(ht))
 }
 
-function getDistance(latlon1,latlon2){
-const R = 6317000;
-const xyz1=latLonToXYZ(latlon1, R)
-const xyz2 = latLonToXYZ(latlon2, R)
-const eucl = euclidean(xyz1,xyz2)
-return eucl;
-
-}
-
-function euclidean(p1,p2){
-  return Math.sqrt(
-    (p1.x-p2.x)*(p1.x-p2.x)+
-    (p1.y-p2.y)*(p1.y-p2.y)+
-    (p1.z-p2.z)*(p1.z-p2.z)
-  )
-}
 
 let state = document.getElementById("state")
 let getloc = document.getElementById("getloc")
@@ -453,9 +423,6 @@ let maxY;
 let cachesidelat = []
 let cachesidelon = []
 let hope;
-let sidelatlon = []
-let a; 
-let b;
 
 popup.style.display = "none"
 
@@ -528,10 +495,8 @@ const showLocation = async (position) => {
   console.log(data.address)
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
-          sidelatlon.push(position.coords)
           console.log(position.coords.heading)
-
-
+  
 };
 
 function options (){
@@ -571,7 +536,6 @@ function error(err) {
           ctx.moveTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
           cachelat = sidelat[sidelat.length-1]
           cachelon = sidelon[sidelon.length-1]
-          a = sidelatlon[sidelatlon.length-1]
           console.log(cachelat,cachelon)
           // alert("switch off device's location and switch on again when reach the ending corner")
           markcoord.innerHTML = "STOP";
@@ -579,7 +543,7 @@ function error(err) {
         else if (markcoord.innerHTML == "STOP") {
           cachelat2 = sidelat[sidelat.length-1]
           cachelon2 = sidelon[sidelon.length-1]
-          b = sidelatlon[sidelatlon.length-1]
+
           console.log(cachelat2,cachelon2)
 
           ctx.lineTo(sidelat[sidelat.length-1]*20,sidelon[sidelon.length-1]*20)
@@ -589,10 +553,11 @@ function error(err) {
           console.log("stop ",sidelat,sidelon)
           // alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
           
- 
+          let a = { latitude: cachelat, longitude: cachelon }
+          let b = { latitude: cachelat2, longitude: cachelon2 }
 
-          let dist = getDistance(a,b)
-          alert("distance is "+String(dist)+" metres")
+          console.log(haversineDistance(a, b))
+          alert("distance is "+String(haversineDistance(a, b))+" metres")
           markcoord.innerHTML = "START";
         }
         ctx.stroke()
