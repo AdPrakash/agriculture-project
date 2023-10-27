@@ -492,7 +492,7 @@ const showLocation = async (position) => {
   let data = await response.json();
   state.innerHTML = data.address.state
   district.innerHTML = data.address.state_district
-  console.log(data.address)
+  //console.log(data.address)
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
           console.log(position.coords.heading)
