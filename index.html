@@ -513,7 +513,7 @@ let video = document.getElementById("vid");
         function options (){
         enableHighAccuracy: true
         // timeout: 5000
-        // maximumAge: 0;
+        maximumAge: 0;
         }
 
         function error(err) {
@@ -599,7 +599,7 @@ let video = document.getElementById("vid");
 
           console.log(cachelat2,cachelon2)
 
-          ctx.lineTo(sidelat[sidelat.length-1]*2,sidelon[sidelon.length-1]*2)
+          ctx.lineTo(sidelat[sidelat.length-1]*20,sidelon[sidelon.length-1]*20)
           // debx+=5
           // deby+=5
           // debxend+=10
