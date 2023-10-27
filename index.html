@@ -173,11 +173,8 @@
       /* height: 70%; */
       height: 500px;
       /* width: 94%; */
-      width: 94%;
-      background-color: white;
-      border-color: black;
-      border-width: 1px;
-      border-style: solid;
+      width: 500px;
+      background-color: orange;
       left: 103%;
     }
 
@@ -485,13 +482,13 @@ getloc.addEventListener("click",() => {
 
 const showLocation = async (position) => {
   //We user the NOminatim API for getting actual addres from latitude and longitude
-  let response = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
-  );
+  //let response = await fetch(
+    //`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
+  //);
   //store response object
-  let data = await response.json();
-  state.innerHTML = data.address.state
-  district.innerHTML = data.address.state_district
+  //let data = await response.json();
+  //state.innerHTML = data.address.state
+  //district.innerHTML = data.address.state_district
   //console.log(data.address)
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
