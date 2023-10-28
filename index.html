@@ -26,19 +26,29 @@
   <body>
     
     <div id="marker"></div>
-    <button id="closecam" autoplay></button>
+    <button id="closecam" autoplay>CLOSE</button>
     <video id="vid"></video>
     <div id="frstpgtitle" class="title">Your Location</div>
     <div id="scndpgtitle" class="title">Field details</div>
     <div class="page" id="firstpg"></div>
     <div class="page" id="secondpg"></div>
-    <div class="page" id="thirdpg"></div>
+    <div class="page" id="thirdpg">
+      <button class="dashboardbut" id="overview">Overview</button>
+      <button class="dashboardbut" id="weather">Weather</button>
+      <button class="dashboardbut" id="detailed">Detailed</button>
+      <textarea id="responseTextarea" cols="49" rows="10"></textarea>
+    </div>
     <div id="empty"></div>
     <div id="footer">Dashboard</div>
     <div id="root"></div>
     <textarea id="state" class="inputtop" cols="20" rows="2">Enter state</textarea>
     <textarea id="district" class="inputmid" cols="20" rows="2">Enter district</textarea>
+    <textarea id="profilename" class="inputmid" cols="20" rows="2">Enter profile name</textarea>
+    <textarea id="enterarea" class="inputtop" cols="20" rows="2">Enter area</textarea>
+    
+
     <div id="state" class="inputmid" class="or">or</div>
+    <div id="or2" class="inputmid" class="or">or</div>
     <button id="calarea" class="inputmid" autoplay>Map your field</button>
     <button id="getloc" class="inputmid">get location</button>
     <button id="markcoord">START</button>
@@ -46,6 +56,7 @@
     <!-- <button id="previous" class="inputmid">Previous</button> -->
     <button id="next2" class="inputmid">Next</button>
     <button id="previous2" class="inputmid">Previous</button>
+    <div id="canvpreview">Preview:-</div>
     <canvas id="myCanvas"></canvas>
     <div id="profileicon"></div>
     <div id="popup">
@@ -101,7 +112,7 @@
     }
 
     #next {
-      top: 50%;
+      top: 70%;
       left: 53%;
       width: 30%;
       height: 5%;
@@ -170,11 +181,13 @@
     #myCanvas{
       position: absolute;
       bottom: 7%;
-      /* height: 70%; */
-      height: 500px;
-      /* width: 94%; */
-      width: 500px;
-      background-color: orange;
+      height: 50%;
+      /*height: 500px;*/
+      width: 94%;
+      /*width: 500px;*/
+      background-color: white;
+      border-style: solid;
+      border-width: 1px;
       left: 103%;
     }
 
@@ -188,18 +201,8 @@
         z-index: +3;
         border-radius: 100px;
         background-color: red;
+        font-weight:800;
         /* display: hidden; */
-    }
-
-    #marker{
-      position: absolute;
-        left: 145%;
-        bottom: 20%;
-        width: 7%;
-        aspect-ratio: 1/1;
-        z-index: 3;
-        border-radius: 100px;
-        background-color: yellow;
     }
 
     #markcoord {
@@ -249,9 +252,26 @@
       font-size: larger;
       border-radius: 20px;
       background-color: greenyellow;
-      top: 15%;
+      top: 17%;
     }
 
+    #or2{
+      position: absolute;
+      left: 110%;
+      top: 17%;
+    }
+
+    #enterarea{
+      left: 113%;
+      top: 10%;
+    }
+
+    #canvpreview{
+      position: absolute;
+      left: 103%;
+      top: 39%;
+      font-size: xx-large;
+    }
     
     #getloc{
       left: 28%;
@@ -268,6 +288,7 @@
     }
 
     .inputtop{
+      background-color: white;
       position: absolute;
       top: 20%;
       resize: none;
@@ -278,6 +299,7 @@
     }
 
     .inputmid{
+      background-color: white;
       position: absolute;
       top: 30%;
       resize: none;
@@ -285,6 +307,18 @@
       overflow: hidden;
       height: 4%;
       border-radius: 30px;
+    }
+
+    #responseTextarea{
+      position: relative;
+      top: 50%;
+      left: 2%;
+      resize: none;
+    }
+
+    #profilename{
+      left: 8%;
+      top: 60%;
     }
 
     #state{
@@ -331,6 +365,21 @@
       left: 203%;
     }
 
+    .dashboardbut{
+      position: relative;
+      width: 25%;
+      aspect-ratio: 2/1;
+      top: 7%;
+      left: 10%;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      background-color: white;
+      font-size: larger;
+      text-align: center;
+      border-style: solid;
+      
+    }
+
     .page{
       position: absolute;
       top: 2%;
@@ -372,6 +421,7 @@ function haversineDistance (a, b) {
   return 2 * R * asin(sqrt(ht))
 }
 
+const API_KEY = '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';
 
 let state = document.getElementById("state")
 let getloc = document.getElementById("getloc")
@@ -382,7 +432,7 @@ let markcoord = document.getElementById("markcoord")
 let sidelat = []
 let sidelon = []
 let noofside = 0
-let marker = document.getElementById("marker")
+// let marker = document.getElementById("marker")
 let myCanvas = document.getElementById("myCanvas")
 var ctx = myCanvas.getContext("2d");
 var startcounter = 0
@@ -420,7 +470,9 @@ let maxY;
 let cachesidelat = []
 let cachesidelon = []
 let hope;
-
+let responseTextarea = document.getElementById("responseTextarea")
+let canvpreview = document.getElementById("canvpreview")
+canvpreview.style.display = "none"
 popup.style.display = "none"
 
 newbut.addEventListener("click",()=>{
@@ -449,12 +501,51 @@ nextcounter+=1
 console.log(nextcounter)
 })
 
-next2.addEventListener("click",()=>{
+next2.addEventListener("click", async (e)=>{
+e.preventDefault();
 
+myCanvas.style.left = "203%"
+myCanvas.style.top = "15%"
 window.scrollTo(scrolltarget,0)
 scrolltarget += screen.width
 nextcounter+=1
 console.log(nextcounter)
+
+let mytext = "Give me an yearly planner for sowing crops in a 500 metre square field in Uttar pradesh along with budget division among tools and crop seed price"
+
+if (mytext) {
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${"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"}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{ role: 'user', content: mytext }],
+                    temperature: 1.0,
+                    top_p: 0.7,
+                    n: 1,
+                    stream: false,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                responseTextarea.value = data.choices[0].message.content;
+            } else {
+                responseTextarea.value = 'Error: Unable to process your request.';
+            }
+        } catch (error) {
+            console.error(error);
+            responseTextarea.value = 'Error: Unable to process your request.';
+        }
+    }
+
+
 })
 
 previous2.addEventListener("click",()=>{
@@ -467,7 +558,7 @@ console.log(nextcounter)
 
 
 myCanvas.style.display = "none"
-marker.style.display = "none"
+// marker.style.display = "none"
 closecam.style.display = "none"
 markcoord.style.display = "none"
 getloc.addEventListener("click",() => {
@@ -481,18 +572,21 @@ getloc.addEventListener("click",() => {
 })
 
 const showLocation = async (position) => {
-  //We user the NOminatim API for getting actual addres from latitude and longitude
-  //let response = await fetch(
-    //`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
-  //);
-  //store response object
-  //let data = await response.json();
-  //state.innerHTML = data.address.state
-  //district.innerHTML = data.address.state_district
-  //console.log(data.address)
+
           sidelat.push(position.coords.latitude)
           sidelon.push(position.coords.longitude)
           console.log(position.coords.heading)
+
+  //We user the NOminatim API for getting actual addres from latitude and longitude
+   let response = await fetch(
+     `https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`
+  );
+  //store response object
+  let data = await response.json();
+  state.innerHTML = data.address.state
+  district.innerHTML = data.address.state_district
+  console.log(data.address)
+
   
 };
 
@@ -508,29 +602,39 @@ function error(err) {
 
         calarea.addEventListener("click", () => {
           myCanvas.style.display = "block"
-          marker.style.display = "block"
+          // marker.style.display = "block"
           closecam.style.display = "block"
           markcoord.style.display = "block"
+          canvpreview.style.display = "block"
         })
     
         closecam.addEventListener("click",()=>{
           closecam.style.display = "none"
           markcoord.style.display = "none"
-          marker.style.display = "none"
+          // marker.style.display = "none"
           // navigator.geolocation.clearWatch(id);
         })
 
       markcoord.addEventListener("click",()=>{
-          
+          let xcan1;
+          let ycan1;
           ctx.lineWidth = "2"
           ctx.strokeStyle = "black"
-              
+          
         if(markcoord.innerHTML == "START"){
           noofside++
-
+          // console.log("noofside",noofside)
+          if(noofside == 1){
+            xcan1 = 7
+            ycan1 = (myCanvas.height/2)+30
+          }
+          else{
+            xcan1 = sidelat[sidelat.length-1]
+            ycan1 = sidelon[sidelon.length-1]
+          }
           ctx.beginPath()
           // ctx.moveTo(debx,deby)
-          ctx.moveTo(sidelat[sidelat.length-1],sidelon[sidelon.length-1])
+          ctx.moveTo(xcan1,ycan1)
           cachelat = sidelat[sidelat.length-1]
           cachelon = sidelon[sidelon.length-1]
           console.log(cachelat,cachelon)
@@ -564,6 +668,8 @@ function error(err) {
 
       })
     
+
+
 
     </script>
   </body>
