@@ -40,6 +40,7 @@
       <button class="dashboardbut" id="overview">GPSdata</button>
       <button class="dashboardbut" id="detailed">Detailed</button>
       <textarea id="responseTextarea" cols="40" rows="10"></textarea>
+      <div id="loadingicon"></div>
       <p id="ar">Area</p>
       <table id="tbl">
         <tr>
@@ -73,12 +74,37 @@
       <button id="newbut">New profile</button>
     </div>
     
+    
   <style>
     body{
       background-color: greenyellow;
       scroll-snap-type: mandatory;
       overflow: hidden;
     }
+
+    #loadingicon{
+      position: relative;
+      top: -45%;
+      left: 30%;
+      background-color: black;
+      background-image: url(https://www.shutterstock.com/image-vector/industrial-agricultural-icon-260nw-526588474.jpg);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 150px;
+      aspect-ratio: 1/1;
+      border-radius: 70px;
+      z-index: +100;
+      /* animation-name: rot;
+      animation-duration: 3s;
+      animation-iteration-count: 5; */
+    }
+
+    @keyframes rot {
+  0% {transform: rotate(0deg)}
+  50% {transform: rotate(180deg)}
+  100% {transform: rotate(360deg)}
+}
 
     #ar{
       position: absolute;
@@ -528,7 +554,7 @@ let delcachelon = cachelon2-cachelon;
 let popup = document.getElementById("popup")
 let profileicon = document.getElementById("profileicon")
 let newbut = document.getElementById('newbut')
-let popupcount = 0;
+let popupcount = 1;
 let maxX;
 let maxY;
 let cachesidelat = []
@@ -545,7 +571,13 @@ let overview = document.getElementById("overview")
 let detailed = document.getElementById("detailed")
 var table = document.getElementById("tbl");
 let ar = document.getElementById("ar")
+let loadingicon = document.getElementById("loadingicon")
+let enterarea = document.getElementById("enterarea")
+loadingicon.style.display = "none"
 ar.style.display = "none"
+
+
+
 detailed.addEventListener("click",()=>{
   myCanvas.style.display = "none"
   responseTextarea.style.display = "block"
@@ -564,6 +596,7 @@ canvpreview.style.display = "none"
 popup.style.display = "none"
 
 newbut.addEventListener("click",()=>{
+  popup.style.display = "none"
   window.scrollTo(0,0)
   nextcounter=0
   scrolltarget = screen.width
@@ -571,12 +604,11 @@ newbut.addEventListener("click",()=>{
 
 profileicon.addEventListener("click",()=>{
   popupcount++
-  
   if(popupcount%2==0){
-    popup.style.display = "none"
+    popup.style.display = "block"
 }
 else{
-    popup.style.display = "block"
+    popup.style.display = "none"
 }
 })
 
@@ -592,6 +624,7 @@ localStorage.setItem("district", district.innerHTML);
 })
 
 next2.addEventListener("click", async (e)=>{
+
 e.preventDefault();
 
 
@@ -699,7 +732,7 @@ function error(err) {
         closecam.addEventListener("click",()=>{
           closecam.style.display = "none"
           markcoord.style.display = "none"
-          localStorage.setItem("area",area)
+          localStorage.setItem("area",enterarea.innerHTML)
           // marker.style.display = "none"
           // navigator.geolocation.clearWatch(id);
         })
@@ -722,14 +755,16 @@ function error(err) {
             xcan1 = sidelat[sidelat.length-1]
             ycan1 = sidelon[sidelon.length-1]
           }
-          // ctx.beginPath()
+          ctx.beginPath()
           // ctx.moveTo(debx,deby)
-          // ctx.moveTo(xcan1,ycan1)
+          ctx.moveTo(xcan1,ycan1)
           cachelat = sidelat[sidelat.length-1]
           cachelon = sidelon[sidelon.length-1]
           console.log(cachelat,cachelon)
           // alert("switch off device's location and switch on again when reach the ending corner")
           markcoord.innerHTML = "STOP";
+          
+          
           var row = table.insertRow();
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
@@ -769,6 +804,7 @@ function error(err) {
           // ctx.rect((myCanvas.width/2)-distarr[0]*1.5, (myCanvas.height/3), distarr[0]*1.5, distarr[1]*1.5);
           ctx.rect(60, 20, distarr[0]*3, distarr[1]*3);
           area = distarr[0]*distarr[1]
+          enterarea.innerHTML = area
           ar.innerHTML = "Area:-"+" "+String(area)
           }
         }
