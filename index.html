@@ -30,6 +30,10 @@
     <video id="vid"></video>
     <div id="frstpgtitle" class="title">Your Location</div>
     <div id="scndpgtitle" class="title">Field details</div>
+    <div class="page" id="zeropg">
+      <div id="appicon"></div>
+      <p id="appname">AgriBuddy</p>
+    </div>
     <div class="page" id="firstpg"></div>
     <div class="page" id="secondpg"></div>
     <div class="page" id="thirdpg">
@@ -78,7 +82,7 @@
 
     #ar{
       position: absolute;
-      bottom: 2%;
+      top: 65%;
       left: 30%;
       font-size: larger;
     }
@@ -100,6 +104,29 @@
   text-align: left;
   padding: 8px;
 }
+
+  #appicon{
+      position: relative;
+      top: 30%;
+      left: 30%;
+      width: 40%;
+      aspect-ratio: 1/1;
+      background-color: gainsboro;
+      background-image: url(https://www.shutterstock.com/image-vector/industrial-agricultural-icon-260nw-526588474.jpg);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      border-radius: 100px;
+    
+  }
+
+    #appname{
+      position: relative;
+      top: 30%;
+      left: 29%;
+      font-size: xx-large;
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
 
     #profileicon{
       position: absolute;
@@ -386,6 +413,11 @@
       padding-left: 3%;
     }
 
+    #zeropg{
+      left: -100%;
+      z-index: +15;
+    }
+
     #firstpg {
       left: 3%;
     }
@@ -428,6 +460,7 @@
     <script type="module" src="/src/main.tsx"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/haversine-distance@1.2.1/index.min.js"></script> -->
 <script type="module">
+
 import API_KEY from "/apikey.js"
 
 
@@ -733,7 +766,8 @@ function error(err) {
 
           if(noofside == 2){
           // ctx.rect((myCanvas.width/2)-distarr[0]*0.00005, (myCanvas.height/3), distarr[0]*0.00005, distarr[1]*0.00005);
-          ctx.rect((myCanvas.width/2)-distarr[0]*1.5, (myCanvas.height/3), distarr[0]*1.5, distarr[1]*1.5);
+          // ctx.rect((myCanvas.width/2)-distarr[0]*1.5, (myCanvas.height/3), distarr[0]*1.5, distarr[1]*1.5);
+          ctx.rect(60, 20, distarr[0]*3, distarr[1]*3);
           area = distarr[0]*distarr[1]
           ar.innerHTML = "Area:-"+" "+String(area)
           }
@@ -741,9 +775,70 @@ function error(err) {
         ctx.stroke()
 
         startcounter++
-
-
       })
+
+      function solveeqnusingmult(a,b,c,d,e,f,xory){
+    
+    // for ax + by + c = 0
+    //     dx + ey + f = 0
+
+    a1 = a*(d/a)
+    b1 = b*(d/a)
+    c1 = c*(d/a)
+    y = (f - c1)/(b1-e)
+    x = (-c-(b*y))/a
+    
+    if(xory == "x"){
+        // console.log(x)
+        return x
+    }
+    else{
+    // console.log(y)
+    return y
+    }
+
+    // LOGIC!!
+
+    //a1x + b1y + c1 = 0
+    //dx + ey + f
+    //(b1-e)*y + (c1-f) =0
+    //y = (f - c1)/(b1-e)
+    
+    //ax + by + c = 0
+    //x = (-c-(b*y))/a
+}
+// console.log(solveeqnusingmult(5,4,-2,5,3,-1,"y"))
+
+function slopeofline(x1,y1,x2,y2){
+    
+    let slope = (y2-y1)/(x2-x1)
+    
+    return slope
+    
+    // console.log(slope)
+    
+    }
+    // slopeofline(2,2,1,1)
+    
+    function anglebetweentwolines(m1,m2){
+    
+    let angleoflines = mod((m2-m1)/(1+(m1*m2)))
+    return angleoflines
+    // console.log(angleoflines)
+    }
+    
+    // anglebetweentwolines(2,1)
+    // anglebetweentwolines(slopeofline(2,2,1,1),slopeofline(3,1,5,4))
+    
+    function mod(something){
+        
+        if(something < 0){
+            return something*-1
+        }
+        else{
+            return something
+        }
+    }
 
     </script>
   </body>
