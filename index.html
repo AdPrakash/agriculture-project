@@ -573,6 +573,17 @@ var table = document.getElementById("tbl");
 let ar = document.getElementById("ar")
 let loadingicon = document.getElementById("loadingicon")
 let enterarea = document.getElementById("enterarea")
+let magnification;
+let slopearr = []
+let x1;
+let y1;
+let pixxarr = []
+let pixyarr =[]
+let pixxdistarr = []
+let pixydistarr = []
+let magx;
+let magy;
+
 loadingicon.style.display = "none"
 ar.style.display = "none"
 
@@ -674,7 +685,9 @@ previous2.addEventListener("click",()=>{
 
 window.scrollTo(-scrolltarget,0)
 scrolltarget -= screen.width
+if(nextcounter > 0){
 nextcounter-=1
+}
 console.log(nextcounter)
 })
 
@@ -737,11 +750,18 @@ function error(err) {
           // navigator.geolocation.clearWatch(id);
         })
 
+        ctx.lineWidth = "2"
+          ctx.strokeStyle = "black"
+          ctx.beginPath()
+          ctx.moveTo(7,(myCanvas.height/2)+30)
+          // ctx.moveTo(7,7)
       markcoord.addEventListener("click",()=>{
           let xcan1;
           let ycan1;
-          ctx.lineWidth = "2"
-          ctx.strokeStyle = "black"
+          // ctx.lineWidth = "2"
+          // ctx.strokeStyle = "black"
+          // ctx.beginPath()
+          // ctx.moveTo(7,(myCanvas.height/2)+30)
           
         if(markcoord.innerHTML == "START"){
           noofside++
@@ -749,15 +769,21 @@ function error(err) {
           if(noofside == 1){
             xcan1 = 7
             ycan1 = (myCanvas.height/2)+30
-            
+            pixxarr.push(7)
+            // pixyarr.push((myCanvas.height/2)+30)
+            pixyarr.push(7)
+
           }
           else{
             xcan1 = sidelat[sidelat.length-1]
             ycan1 = sidelon[sidelon.length-1]
           }
-          ctx.beginPath()
+          
           // ctx.moveTo(debx,deby)
-          ctx.moveTo(xcan1,ycan1)
+          // 
+          
+          console.log("pixxarr",pixxarr)
+          console.log("pixyarr",pixyarr)
           cachelat = sidelat[sidelat.length-1]
           cachelon = sidelon[sidelon.length-1]
           console.log(cachelat,cachelon)
@@ -783,6 +809,9 @@ function error(err) {
           console.log("stop ",sidelat,sidelon)
           // alert("stop "+String(sidelat[noofside])+" "+String(sidelon[noofside]))
 
+
+          
+
           var row = table.insertRow();
           var cell1 = row.insertCell(0);
           var cell2 = row.insertCell(1);
@@ -799,30 +828,77 @@ function error(err) {
 
           distarr.push(haversineDistance(a,b))
 
+
+          // pixxdistarr.push(mod((sidelat[sidelat.length-1]-sidelat[sidelat.length-2])*25/mod((sidelat[1]-sidelat[0]))))
+          // pixydistarr.push(mod((sidelon[sidelon.length-1]-sidelon[sidelon.length-2])*25/mod((sidelon[1]-sidelon[0]))))
+
+          // pixxarr.push(pixxarr[pixxarr.length-1]+pixxdistarr[pixxdistarr.length-1])
+          // pixyarr.push(pixyarr[pixyarr.length-1]+pixydistarr[pixydistarr.length-1])
+
+          
+          console.log("pixxarr",pixxarr)
+          console.log("pixyarr",pixyarr)
+          console.log("pixxdistarr",pixxdistarr)
+          console.log("pixydistarr",pixydistarr)
+
+          if( noofside > 1 && sidelat[sidelat.length-1] == sidelat[0] && sidelon[sidelon.length-1] == sidelon[0]){
+            ctx.lineTo(7,(myCanvas.height/2)+30)
+            // ctx.lineTo(7,7)
+          }
+          else{
+            //  WORKING!!!
+            ctx.lineTo(sidelat[sidelat.length-1]*135/sidelat[0],sidelon[sidelon.length-1]*((myCanvas.height/2)+30)/sidelon[0])
+
+            // ctx.lineTo(pixxarr[pixxarr.length-1],pixyarr[pixyarr.length-1])
+          }
+
+          if(sidelat[sidelat.length-1]*135/sidelat[0] > myCanvas.width){
+            // ctx.translate(-100,0)
+            console.log("out of bounds in x axis")
+            // while(sidelat[sidelat.length-1]*135/sidelat[0] > myCanvas.width){
+            //   let tranx = 0
+            //   ctx.translate(tranx,0)
+            //   tranx = tranx-10
+            //   // trany = trany-10
+            // }
+          }
+          else if(sidelon[sidelon.length-1]*135/sidelon[0] > myCanvas.height){
+            // ctx.translate(0,-100)
+            console.log("out of bounds in y axis")
+            // while(sidelon[sidelon.length-1]*135/sidelon[0] > myCanvas.height){
+            //   let trany = 0
+            //   ctx.translate(0,trany)
+            //   trany = trany-10
+            // }
+          }
+
+
           if(noofside == 2){
           // ctx.rect((myCanvas.width/2)-distarr[0]*0.00005, (myCanvas.height/3), distarr[0]*0.00005, distarr[1]*0.00005);
           // ctx.rect((myCanvas.width/2)-distarr[0]*1.5, (myCanvas.height/3), distarr[0]*1.5, distarr[1]*1.5);
-          ctx.rect(60, 20, distarr[0]*3, distarr[1]*3);
+          // ctx.rect(60, 20, distarr[0]*3, distarr[1]*3);
           area = distarr[0]*distarr[1]
           enterarea.innerHTML = area
           ar.innerHTML = "Area:-"+" "+String(area)
           }
         }
+        
         ctx.stroke()
 
         startcounter++
       })
+      
 
-      function solveeqnusingmult(a,b,c,d,e,f,xory){
+      function solveeqn(a,b,c,d,e,f,xory){
     
     // for ax + by + c = 0
     //     dx + ey + f = 0
 
-    a1 = a*(d/a)
-    b1 = b*(d/a)
-    c1 = c*(d/a)
-    y = (f - c1)/(b1-e)
-    x = (-c-(b*y))/a
+    let a1 = a*(d/a)
+    let b1 = b*(d/a)
+    let c1 = c*(d/a)
+    let y = (f - c1)/(b1-e)
+    let x = (-c-(b*y))/a
     
     if(xory == "x"){
         // console.log(x)
@@ -875,6 +951,17 @@ function slopeofline(x1,y1,x2,y2){
             return something
         }
     }
+
+    function revmod(something){
+        
+        if(something > 0){
+            return something*-1
+        }
+        else{
+            return something
+        }
+    }
+
 
     </script>
   </body>
