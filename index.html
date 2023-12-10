@@ -44,8 +44,9 @@
       <textarea id="healthTextarea" cols="40" rows="10"></textarea>
       <textarea class="inputtop" id="plantdiagnose" cols="20" rows="2">Enter crop</textarea>
       <video id="video">Video Stream not available</video>
-      <button id="startbutton">Start Video</button>
       <button id="startbutton2">Take photo</button>
+      <button id="startbutton">Start Video</button>
+      
       <div id="webcam-container"></div>
       <div id="label-container"></div>
       <div id="loadingicon"></div>
@@ -104,13 +105,14 @@
     }
 
     #startbutton{
-      position: relative;
-      top: 70%;
-      left: -38%;
+      position: absolute;
+      top: 80%;
+      left: 35%;
       height: 6%;
       border-radius: 100%;
       font-weight: bold;
       background-color: greenyellow;
+      /* z-index: +2; */
     }
 
     #webcam-container{
@@ -120,9 +122,9 @@
     }
 
     #startbutton2{
-      position: relative;
-      top: 70%;
-      left: 38%;
+      position: absolute;
+      top: 80%;
+      left: 35%;
       height: 6%;
       border-radius: 100%;
       font-weight: bold;
@@ -470,6 +472,7 @@
       color: black;
       background-color: white;
       z-index: -0.5;
+      /* display: none; */
     }
 
     #profilename{
