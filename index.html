@@ -81,7 +81,7 @@
     <button id="previous2" class="inputmid">Previous</button>
     <div id="canvpreview">Preview:-</div>
     <canvas id="myCanvas"></canvas>
-    <div id='map' style='width: 390px; height: 370px;'></div>
+    <div id='map'></div>
     <div id="profileicon"></div>
     <div id="popup">
       <table id="tblpop">
@@ -95,7 +95,8 @@
     
   <style>
     body{
-      background-color: greenyellow;
+      background-color: #00b600;
+      font-family: Arial, Helvetica, sans-serif;
       scroll-snap-type: mandatory;
       overflow: hidden;
     }
@@ -112,6 +113,8 @@
     #map{
       position: absolute;
       top: 43%;
+      width: 94%;
+      aspect-ratio: 1/1;
       bottom: 7%;
       left: 103%;
       z-index: +1;
@@ -124,7 +127,8 @@
       height: 6%;
       border-radius: 100%;
       font-weight: bold;
-      background-color: greenyellow;
+      background-color: yellowgreen;
+      color: black;
       /* z-index: +2; */
     }
 
@@ -141,7 +145,8 @@
       height: 6%;
       border-radius: 100%;
       font-weight: bold;
-      background-color: greenyellow;
+      background-color: yellowgreen;
+      color: black;
       /* z-index: -1; */
     }
 
@@ -214,7 +219,7 @@
       top: 30%;
       left: 29%;
       font-size: xx-large;
-      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
     }
 
     #profileicon{
@@ -245,11 +250,11 @@
     #newbut{
       position: relative;
       width: 25%;
-      top: 80%;
+      top: 65%;
       left: 37%;
       aspect-ratio: 2/1;
-      background-color: green;
-      color: aliceblue;
+      background-color: yellowgreen;
+      color: black;
       font-size: larger;
       border-radius: 30px;
     }
@@ -261,7 +266,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: greenyellow;
+      background-color: yellowgreen;
       z-index: +10;
     }
 
@@ -272,7 +277,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: greenyellow;
+      background-color: yellowgreen;
       z-index: +10;
     }
 
@@ -283,7 +288,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: greenyellow;
+      background-color: yellowgreen;
       z-index: +1;
     }
 
@@ -294,13 +299,13 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: greenyellow;
+      background-color: yellowgreen;
       z-index: +1;
     }
 
     .or{
       color: black;
-      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
       border-radius: 0%;
       position: absolute;
       top: 30%;
@@ -360,14 +365,14 @@
         object-fit: cover;
         z-index: +3;
         border-radius: 100px;
-        background-color: green;
+        background-color: yellowgreen;
         /* display: hidden; */
     }
 
     #frstpgtitle{
            left: 4%;
            color: black;
-           font-family: 'Courier New', Courier, monospace;
+           /* font-family: Arial, Helvetica, sans-serif; */
     }
 
     #scndpgtitle{
@@ -379,7 +384,7 @@
 
     .title{
       font-size: xx-large;
-      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      /* font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; */
       position: absolute;
       top: 3%;
       z-index: +1;
@@ -395,7 +400,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: greenyellow;
+      background-color: yellowgreen;
       top: 17%;
     }
 
@@ -430,7 +435,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: greenyellow;
+      background-color: yellowgreen;
     }
 
     #prvcrops{
@@ -607,6 +612,7 @@ function haversineDistance (a, b) {
   return 2 * R * asin(sqrt(ht))
 }
 
+let profilename = document.getElementById("profilename")
 let state = document.getElementById("state")
 let getloc = document.getElementById("getloc")
 let district = document.getElementById("district")
@@ -683,6 +689,10 @@ let startbutton = document.getElementById("startbutton")
 let startbutton2 = document.getElementById("startbutton2")
 let healthTextarea = document.getElementById("healthTextarea")
 let plantdiagnose = document.getElementById("plantdiagnose")
+let getloccount = 0
+
+calarea.disabled = true
+overview.disabled = true         
 
 
 loadingicon.style.display = "none"
@@ -691,6 +701,9 @@ ar.style.display = "none"
 plantdiagnose.style.display = "none"
 
 detailed.addEventListener("click",()=>{
+  detailed.style.border = "medium solid #00b600"
+  overview.style.border = "thin solid #000000"
+  health.style.border = "thin solid #000000"
   mp.style.display = "none"
   responseTextarea.style.display = "block"
   ar.style.display = "none"
@@ -701,6 +714,13 @@ detailed.addEventListener("click",()=>{
 })
 
 overview.addEventListener("click",()=>{
+  overview.style.border = "medium solid #00b600"
+  detailed.style.border = "thin solid #000000"
+  health.style.border = "thin solid #000000"
+  if(getloccount == 0){
+    alert("Click the get location button on the first page to avail the feature")
+  }
+
   ar.style.display = "block"
   mp.style.left = "203%"
   mp.style.top = "15%"
@@ -713,6 +733,9 @@ overview.addEventListener("click",()=>{
 })
 
 health.addEventListener("click",()=>{
+  health.style.border = "medium solid #00b600"
+  detailed.style.border = "thin solid #000000"
+  overview.style.border = "thin solid #000000"
   mp.style.display = "none"
   responseTextarea.style.display = "none"
   ar.style.display = "none"
@@ -745,6 +768,10 @@ else{
 
 
 next.addEventListener("click",()=>{
+
+  var rowpop = tblpop.insertRow();
+          var cell1pop = rowpop.insertCell(0);
+          cell1pop.innerHTML = profilename.value
 
 window.scrollTo(scrolltarget,0)
 scrolltarget += screen.width
@@ -817,6 +844,11 @@ myCanvas.style.display = "none"
 closecam.style.display = "none"
 markcoord.style.display = "none"
 getloc.addEventListener("click",() => {
+    getloccount++
+    calarea.disabled = false
+    overview.disabled = false
+ 
+    console.log("getloccount",getloccount)
 
     if(navigator.geolocation){
       navigator.geolocation.watchPosition(showLocation)
@@ -853,8 +885,16 @@ function error(err) {
         console.error(`ERROR(${err.code}): ${err.message}`);
         }
 
-
+        
+    
         calarea.addEventListener("click", () => {
+          
+          
+  if(getloccount == 0){
+    alert("Click the get location button on the first page to avail the feature")
+  }
+          
+          
           myCanvas.style.display = "none"
           // marker.style.display = "block"
           closecam.style.display = "block"
