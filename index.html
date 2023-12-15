@@ -35,21 +35,73 @@
       <div id="appicon"></div>
       <p id="appname">AgriBuddy</p>
     </div>
-    <div class="page" id="firstpg"></div>
+    <div class="page" id="firstpg">
+      <textarea id="historytext" class="inputtop" cols="20" rows="2">Enter crops grown</textarea>
+    </div>
     <div class="page" id="secondpg">
       <!-- <div id='map' style='width: 390px; height: 370px;'></div> -->
     </div>
+    <div class="page" id="pagediff">
+
+      <button id="nextdiff" class="inputmid">Next</button>
+      <button id="previousdiff" class="inputmid">Previous</button>
+      <div id="History">History</div>
+      <!-- <textarea id="historytext" class="inputtop" cols="20" rows="2">Enter crops grown</textarea> -->
+      <table id="tbldiff">
+        <tr>
+          <th>Crop</th>
+          <th>Price per qt</th>
+        </tr>
+        <tr>
+          <td id="c1"></td>
+          <td id="p1"></td>
+        </tr>
+        <tr>
+          <td id="c2"></td>
+          <td id="p2"></td>
+        </tr>
+        <tr>
+          <td id="c3"></td>
+          <td id="p3"></td>
+        </tr>
+        <tr>
+          <td id="c4"></td>
+          <td id="p4"></td>
+        </tr>
+        <tr>
+          <td id="c5"></td>
+          <td id="p5"></td>
+        </tr>
+      </table>
+      <button class="diffbut" id="select1">SELECT</button>
+      <button class="diffbut" id="select2">SELECT</button>
+      <button class="diffbut" id="select3">SELECT</button>
+      <button class="diffbut" id="select4">SELECT</button>
+      <button class="diffbut" id="select5">SELECT</button>
+    </div>
+
     <div class="page" id="thirdpg">
       <button class="dashboardbut" id="overview">GPSdata</button>
       <button class="dashboardbut" id="detailed">Detailed</button>
       <button class="dashboardbut" id="diseasediag">Health</button>
-      <textarea id="responseTextarea" cols="40" rows="10"></textarea>
-      <textarea id="healthTextarea" cols="40" rows="10"></textarea>
+      <button class="dashboardbut" id="budget">Budget</button>
+      <textarea readonly id="responseTextarea" cols="40" rows="10"></textarea>
+      <textarea readonly id="healthTextarea" cols="40" rows="10"></textarea>
+      <textarea readonly id="budgetTextarea" cols="40" rows="10"></textarea>
       <textarea class="inputtop" id="plantdiagnose" cols="20" rows="2">Enter crop</textarea>
       <video id="video">Video Stream not available</video>
       <button id="startbutton2">Take photo</button>
       <button id="startbutton">Start Video</button>
-      
+      <div class="tile" id="soilprep">Land preparation<br><br>read more</div>
+      <textarea readonly id="soilpreptext" cols="40" rows="10" class="difftext"></textarea>
+      <div class="tile" id="sowing">Sowing<br><br>read more</div>
+      <textarea readonly id="sowtext" cols="40" rows="10" class="difftext"></textarea>
+      <div class="tile" id="irrigation">Irrigation and fertilisation<br><br>read more</div>
+      <textarea readonly id="irrtext" cols="40" rows="10" class="difftext"></textarea>
+      <div class="tile" id="harvesting">Harvesting<br><br>read more</div>
+      <textarea readonly id="harvesttext" class="difftext" cols="40" rows="10"></textarea>
+      <div id="slider"></div>
+      <!-- <div class="tile" id="fertilisation">Harvesting<br><br>read more</div> -->
       <div id="webcam-container"></div>
       <div id="label-container"></div>
       <div id="loadingicon"></div>
@@ -95,10 +147,156 @@
     
   <style>
     body{
-      background-color: #00b600;
+      background-color: #00B277;
       font-family: Arial, Helvetica, sans-serif;
       scroll-snap-type: mandatory;
       overflow: hidden;
+      /* color: white; */
+    }
+
+    .difftext{
+      position: absolute;
+      top: 16%;
+      left: 4%;
+      border-radius: 40px;
+      width: 89%;
+      height: 79%;
+      z-index: +1;
+      font-size: x-large;
+      
+    }
+
+    .diffbut{
+      position: absolute;
+      right: 5%;
+      width: 20%;
+      height: 5%;
+      text-align: center;
+      border-radius: 30px;
+      background-color: #C1FF35;
+    }
+
+    #select1{
+      position: absolute;
+      top: 35%;
+    }
+
+    #select2{
+      position: absolute;
+      top: 40.5%;
+    }
+
+    #select3{
+      position: absolute;
+      top: 46%;
+    }
+
+    #select4{
+      position: absolute;
+      top: 51.5%;
+    }
+
+    #select5{
+      position: absolute;
+      top: 56.5%;
+    }
+
+    #tbldiff{
+      position: absolute;
+      top: 30%;
+      left: 1%;
+      font-size: x-large;
+    }
+
+
+    #soilprep {
+      position: absolute;
+      top: 15%;
+      right: 3%;
+      width: 80%;
+      height: 15%;
+      border-radius: 50px;
+      background-color: rgb(191, 214, 172);
+      text-align: center;
+      padding-top: 5%;
+      font-size: xx-large;
+      
+    }
+    
+
+    #sowing {
+      position: absolute;
+      top: 33%;
+      right: 3%;
+      width: 80%;
+      height: 15%;
+      border-radius: 50px;
+      background-color: rgb(191, 214, 172);
+      text-align: center;
+      padding-top: 5%;
+      font-size: xx-large;
+      
+    }
+
+    #irrigation {
+      position: absolute;
+      top: 51%;
+      right: 3%;
+      width: 80%;
+      height: 15%;
+      border-radius: 50px;
+      background-color: rgb(191, 214, 172);
+      text-align: center;
+      padding-top: 5%;
+      font-size: x-large;
+      
+    }    
+    #harvesting {
+      position: absolute;
+      top: 69%;
+      right: 3%;
+      width: 80%;
+      height: 15%;
+      border-radius: 50px;
+      background-color: rgb(191, 214, 172);
+      text-align: center;
+      padding-top: 5%;
+      font-size: xx-large;
+      
+    }
+
+    #tile{
+      right: 3%;
+      width: 80%;
+      height: 15%;
+      border-radius: 50px;
+      background-color: rgb(191, 214, 172);
+      
+    }
+
+    #slider{
+      position: absolute;
+      top: 15%;
+      left: 5%;
+      width: 5%;
+      height: 80%;
+      background-color: #00B277;
+      border-radius: 50px;
+      z-index: -1;
+    }
+
+    #historytext{
+      position: absolute;
+      top: 61.3%;
+      left: 5.5%;
+      z-index: +1;
+    }
+
+    #History{
+      position: absolute;
+      top: 1%;
+      left: 1%;
+      font-size: xx-large;
     }
 
     #tblpop{
@@ -226,7 +424,7 @@
     #profileicon{
       position: absolute;
       top: 2%;
-      left: 285%;
+      left: 385%;
       width: 10%;
       aspect-ratio: 1/1;
       background-color: gainsboro;
@@ -244,7 +442,7 @@
       width: 100%;
       background-color: whitesmoke;
       border-radius: 2%;
-      left: 200%;
+      left: 300%;
       z-index: +2;
     }
 
@@ -267,7 +465,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: yellowgreen;
+      background-color: #C1FF35;
       z-index: +10;
     }
 
@@ -285,6 +483,28 @@
     #next2 {
       top: 25%;
       left: 153%;
+      width: 30%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: yellowgreen;
+      z-index: +1;
+    }
+
+    #nextdiff {
+      top: 80%;
+      left: 55%;
+      width: 30%;
+      height: 5%;
+      font-size: larger;
+      border-radius: 20px;
+      background-color: yellowgreen;
+      z-index: +1;
+    }
+
+    #previousdiff {
+      top: 80%;
+      right: 55%;
       width: 30%;
       height: 5%;
       font-size: larger;
@@ -410,10 +630,12 @@
       left: 110%;
       top: 17%;
       color: black;
+      /* background-color: #00CF62; */
     }
 
     #or{
       position: absolute;
+      /* background-color: #00CF62; */
       left: 10%;
       top: 30%;
       color: black;
@@ -444,7 +666,7 @@
       height: 5%;
       font-size: larger;
       border-radius: 20px;
-      background-color: yellowgreen;
+      background-color: #C1FF35;
     }
 
     #prvcrops{
@@ -477,8 +699,8 @@
     }
 
     #responseTextarea{
-      position: relative;
-      top: 10%;
+      position: absolute;
+      bottom: -100%;
       left: 0%;
       height: 85%;
       width: 99%;
@@ -487,6 +709,7 @@
       color: black;
       background-color: white;
       z-index: +1;
+      display: hidden;
     }
 
     #healthTextarea{
@@ -503,19 +726,45 @@
       /* display: none; */
     }
 
+    #budgetTextarea{
+      position: absolute;
+      top: 20%;
+      left: 0%;
+      height: 80%;
+      width: 99%;
+      font-size: xx-large;
+      resize: none;
+      color: black;
+      background-color: white;
+      /* z-index: -1; */
+      /* display: none; */
+    }
+
     #profilename{
       left: 8%;
       top: 60%;
+      background-color: #00CF62;
+      border-color: white;
+      border-width: 2px;
+      color: white;
     }
 
     #state{
       left: 8%;
+      /* background-color: #00CF62; */
+      /* border-color: white; */
+      /* border-width: 2px; */
+      /* color: white; */
 
     }
 
     #district{
       left: 8%;
       top: 40%;
+      /* background-color: #00CF62; */
+      /* border-color: white; */
+      /* border-width: 2px; */
+      /* color: white; */
     }
 
     #empty{
@@ -529,7 +778,7 @@
     #footer{
       position: absolute;
       top: 0%;
-      left: 200%;
+      left: 300%;
       width: 100%;
       height: 6%;
       background-color: green;
@@ -554,17 +803,20 @@
     }
 
     #thirdpg {
+      left: 303%;
+    }
+
+    #pagediff {
       left: 203%;
     }
 
     .dashboardbut{
       position: relative;
-      width: 25%;
+      width: 23%;
       aspect-ratio: 2/1;
       top: 7%;
-      left: 12%;
-      border-top-right-radius: 10px;
-      border-top-left-radius: 10px;
+      left: 1%;
+      border-radius: 40px;
       background-color: white;
       font-size: larger;
       text-align: center;
@@ -572,6 +824,8 @@
       color: black;
       
     }
+
+    
 
     .page{
       position: absolute;
@@ -589,7 +843,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script type="module">
 
 import API_KEY from "/apikey.js"
@@ -699,6 +953,319 @@ let startbutton2 = document.getElementById("startbutton2")
 let healthTextarea = document.getElementById("healthTextarea")
 let plantdiagnose = document.getElementById("plantdiagnose")
 let getloccount = 0
+let nextdiff = document.getElementById("nextdiff")
+let previousdiff = document.getElementById("previousdiff")
+let historytext = document.getElementById("historytext")
+let budget = document.getElementById("budget")
+let chosencrop
+let soilprep = document.getElementById("soilprep")
+let sowing = document.getElementById("sowing")
+let irrigation = document.getElementById("irrigation")
+let harvesting = document.getElementById("harvesting")
+let tbldiff = document.getElementById("tbldiff")
+let soilcount = 0
+let sowcount = 0
+let irrcount = 0
+let harcount = 0
+let haryana = ["Banana","Ber","Carrot","Coriander","Garlic","Ginger","Grapes","Green Chilli","Kinnow","Leafy Vegetable","Methi","Peas","Potato","Raddish","Spinach","Apple","Cabbage","Carrot","Cauliflower","Grapes","Green Chilli","Sugarcane","Orange","ChickPeas","Pomegranate","Potato","Raddish","Tomato","Banana","Bottle gourd","Cabbage","Carrot","Cauliflower","Cucumbar","Grapes","Onion","Orange","Papaya","Pomegranate","Potato","Raddish","Spinach","Mustard","Tomato","Potato","Apple","Banana","Ber","Bhindi","Carrot","Maize","Cucumbar","Ginger","Grapes","Maize","Orange","Pomegranate","Potato","Raddish","Tomato","Cauliflower","Onion","Potato","Tomato","Wheat"]
+
+let haryanaprice = [3000,3000,700,1805,3000,8000,4000,5000,1500,1000,1410,1200,325,600,715,5000,450,450,2000,4000,2900,1250,2000,900,4500,550,900,1750,3000,2700,550,400,1450,1400,3500,1000,2200,1650,1500,4250,650,750,750,1550,1500,296,8000,2000,1300,6000,700,3500,3000,9000,3000,1500,3000,5000,700,800,1500,800,1500,1000,1500,2320]
+
+let c1 = document.getElementById("c1")
+let c2 = document.getElementById("c2")
+let c3 = document.getElementById("c3")
+let c4 = document.getElementById("c4")
+let c5 = document.getElementById("c5")
+let p1 = document.getElementById("p1")
+let p2 = document.getElementById("p2")
+let p3 = document.getElementById("p3")
+let p4 = document.getElementById("p4")
+let p5 = document.getElementById("p5")
+let soilpreptext = document.getElementById("soilpreptext")
+let sowtext = document.getElementById("sowtext")
+let irrtext = document.getElementById("irrtext")
+let harvesttext = document.getElementById("harvesttext")
+let difftext = document.getElementsByClassName("difftext")
+let select1 = document.getElementById("select1")
+let select2 = document.getElementById("select2")
+let select3 = document.getElementById("select3")
+let select4 = document.getElementById("select4")
+let select5 = document.getElementById("select5")
+let actcrop = ""
+let actprice = ""
+let budgetTextarea = document.getElementById("budgetTextarea")
+
+budgetTextarea.style.display="none"
+
+select1.addEventListener("click",()=>{
+  actcrop = actcrop+" "+c1.innerHTML
+  actprice = actprice+","+String(p1.innerHTML)
+  console.log(actcrop)
+})
+select2.addEventListener("click",()=>{
+  actcrop = actcrop+" "+c2.innerHTML
+  actprice = actprice+","+String(p2.innerHTML)
+  console.log(actcrop)
+})
+select3.addEventListener("click",()=>{
+  actcrop = actcrop+" "+c3.innerHTML
+  actprice = actprice+","+String(p3.innerHTML)
+  console.log(actcrop)
+})
+select4.addEventListener("click",()=>{
+  actcrop = actcrop+" "+c4.innerHTML
+  actprice = actprice+","+String(p4.innerHTML)
+  console.log(actcrop)
+})
+select5.addEventListener("click",()=>{
+  actprice = actprice+","+String(p5.innerHTML)
+  actcrop = actcrop+" "+c5.innerHTML
+  console.log(actcrop)
+})
+
+healthTextarea.style.display="none"
+table.style.display="none"
+
+soilpreptext.addEventListener("click",()=>{
+  soilpreptext.style.display = "none"
+  soilprep.style.height = "15%"
+    soilprep.style.width = "80%"
+    soilprep.innerHTML = "Land Preparation<br><br>read more"
+    sowing.style.display = "block"
+  irrigation.style.display = "block"
+  harvesting.style.display = "block"
+  soilpreptext.style.display = "none"
+})
+
+sowtext.addEventListener("click",()=>{
+  sowtext.style.display = "none"
+  sowing.style.top = "33%"
+    sowing.style.height = "15%"
+    sowing.style.width = "80%"
+    sowing.innerHTML = "Sowing<br><br>read more"
+    soilprep.style.display = "block"
+  irrigation.style.display = "block"
+  harvesting.style.display = "block"
+})
+
+irrtext.addEventListener("click",()=>{
+  irrtext.style.display="none"
+  irrigation.style.top = "51%"
+    irrigation.style.height = "15%"
+    irrigation.style.width = "80%"
+    irrigation.innerHTML = "Irrigation and fertilisation<br><br>read more"
+    sowing.style.display = "block"
+  soilprep.style.display = "block"
+  harvesting.style.display = "block"
+})
+
+harvesttext.addEventListener('click',()=>{
+  harvesttext.style.display = "none"
+  harvesting.style.top = "69%"
+    harvesting.style.height = "15%"
+    harvesting.style.width = "80%"
+    harvesting.innerHTML = "Harvesting<br><br>read more"
+    sowing.style.display = "block"
+  irrigation.style.display = "block"
+  soilprep.style.display = "block"
+})
+
+soilpreptext.style.display = "none"
+sowtext.style.display = "none"
+irrtext.style.display = "none"
+harvesttext.style.display = "none"
+
+soilprep.addEventListener("click",()=>{
+  
+  soilcount++
+  soilprep.style.width = "95%"
+  soilprep.style.height = "80%"
+  soilprep.style.top = "15%"
+  sowing.style.display = "none"
+  irrigation.style.display = "none"
+  harvesting.style.display = "none"
+  soilprep.innerHTML = ""
+  soilpreptext.style.display = "block"
+  if(soilcount%2==0){
+    soilprep.style.height = "15%"
+    soilprep.style.width = "80%"
+    soilprep.innerHTML = "Land Preparation<br><br>read more"
+    sowing.style.display = "block"
+  irrigation.style.display = "block"
+  harvesting.style.display = "block"
+  soilpreptext.style.display = "none"
+  }
+  
+})
+
+
+sowing.addEventListener("click",async()=>{
+  sowcount++
+  sowing.style.width = "95%"
+  sowing.style.top = "15%"
+  sowing.style.height = "80%"
+  soilprep.style.display = "none"
+  irrigation.style.display = "none"
+  harvesting.style.display = "none"
+  sowtext.style.display = "block"
+  if(sowcount%2==0){
+    sowing.style.top = "33%"
+    sowing.style.height = "15%"
+    sowing.style.width = "80%"
+    sowing.innerHTML = "Sowing<br><br>read more"
+    soilprep.style.display = "block"
+  irrigation.style.display = "block"
+  harvesting.style.display = "block"
+  }
+
+  let mytext = "Instructions to sow"+" "+String(actcrop)+" "+"seeds in a"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "for the upcoming sowing season";
+
+ if (mytext) {
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{ role: 'user', content: mytext }],
+                    temperature: 1.0,
+                    top_p: 0.7,
+                    n: 1,
+                    stream: false,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                sowtext.value = data.choices[0].message.content;
+               
+            } else {
+                responseTextarea.value = 'Error: Unable to process your request.';
+            }
+        } catch (error) {
+            console.error(error);
+            responseTextarea.value = 'Error: Unable to process your request.';
+        }
+    }
+})
+
+
+irrigation.addEventListener("click",async()=>{
+  irrcount++
+  irrigation.style.width = "95%"
+  irrigation.style.height = "80%"
+  irrigation.style.top = "15%"
+  sowing.style.display = "none"
+  soilprep.style.display = "none"
+  harvesting.style.display = "none"
+  irrtext.style.display = "block"
+  if(irrcount%2==0){
+    irrigation.style.top = "51%"
+    irrigation.style.height = "15%"
+    irrigation.style.width = "80%"
+    irrigation.innerHTML = "Irrigation and fertilisation<br><br>read more"
+    sowing.style.display = "block"
+  soilprep.style.display = "block"
+  harvesting.style.display = "block"
+  }
+
+  let mytext = "Instructions to irrigate a"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "for the upcoming sowing season to grow"+" "+String(actcrop);
+
+ if (mytext) {
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{ role: 'user', content: mytext }],
+                    temperature: 1.0,
+                    top_p: 0.7,
+                    n: 1,
+                    stream: false,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                irrtext.value = data.choices[0].message.content;
+               
+            } else {
+                responseTextarea.value = 'Error: Unable to process your request.';
+            }
+        } catch (error) {
+            console.error(error);
+            responseTextarea.value = 'Error: Unable to process your request.';
+        }
+    }
+})
+
+
+harvesting.addEventListener("click",async()=>{
+  harcount++
+  harvesting.style.width = "95%"
+  harvesting.style.height = "80%"
+  harvesting.style.top = "15%"
+  sowing.style.display = "none"
+  irrigation.style.display = "none"
+  soilprep.style.display = "none"
+  harvesttext.style.display = "block"
+  if(harcount%2==0){
+    harvesting.style.top = "69%"
+    harvesting.style.height = "15%"
+    harvesting.style.width = "80%"
+    harvesting.innerHTML = "Harvesting<br><br>read more"
+    sowing.style.display = "block"
+  irrigation.style.display = "block"
+  soilprep.style.display = "block"
+  }
+
+  let mytext = "Instructions to harvest"+" "+String(actcrop)+" "+"seeds on"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "for the upcoming sowing season";
+
+ if (mytext) {
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{ role: 'user', content: mytext }],
+                    temperature: 1.0,
+                    top_p: 0.7,
+                    n: 1,
+                    stream: false,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                harvesttext.value = data.choices[0].message.content;
+               
+            } else {
+                responseTextarea.value = 'Error: Unable to process your request.';
+            }
+        } catch (error) {
+            console.error(error);
+            responseTextarea.value = 'Error: Unable to process your request.';
+        }
+    }
+})
+
 
 calarea.disabled = true
 overview.disabled = true         
@@ -714,24 +1281,31 @@ detailed.addEventListener("click",()=>{
   overview.style.border = "thin solid #000000"
   health.style.border = "thin solid #000000"
   mp.style.display = "none"
-  responseTextarea.style.display = "block"
+  // responseTextarea.style.display = "block"
   ar.style.display = "none"
   healthTextarea.style.display = "none"
   startbutton.style.display = "none"
   startbutton2.style.display = "none"
   plantdiagnose.style.display = "none"
+  sowing.style.display="block"
+  irrigation.style.display="block"
+  soilprep.style.display="block"
+  harvesting.style.display="block"
+  budgetTextarea.style.display="none"
+  budget.style.border = "thin solid #000000"
 })
 
 overview.addEventListener("click",()=>{
   overview.style.border = "medium solid #00b600"
   detailed.style.border = "thin solid #000000"
   health.style.border = "thin solid #000000"
+  budgetTextarea.style.display="none"
   if(getloccount == 0){
     alert("Click the get location button on the first page to avail the feature")
   }
 
   ar.style.display = "block"
-  mp.style.left = "203%"
+  mp.style.left = "303%"
   mp.style.top = "15%"
   mp.style.display = "block"
   responseTextarea.style.display = "none"
@@ -739,12 +1313,18 @@ overview.addEventListener("click",()=>{
   startbutton.style.display = "none"
   startbutton2.style.display = "none"
   plantdiagnose.style.display = "none"
+  sowing.style.display="none"
+  irrigation.style.display="none"
+  soilprep.style.display="none"
+  harvesting.style.display="none"
+  budget.style.border = "thin solid #000000"
 })
 
 health.addEventListener("click",()=>{
   health.style.border = "medium solid #00b600"
   detailed.style.border = "thin solid #000000"
   overview.style.border = "thin solid #000000"
+  budget.style.border = "thin solid #000000"
   mp.style.display = "none"
   responseTextarea.style.display = "none"
   ar.style.display = "none"
@@ -753,6 +1333,60 @@ health.addEventListener("click",()=>{
   startbutton.style.display = "block"
   startbutton2.style.display = "block"
   plantdiagnose.style.display = "block"
+  sowing.style.display="none"
+  irrigation.style.display="none"
+  soilprep.style.display="none"
+  harvesting.style.display="none"
+  budgetTextarea.style.display="none"
+})
+
+budget.addEventListener("click",async()=>{
+  budget.style.border = "medium solid #00b600"
+  health.style.border = detailed.style.border = overview.style.border = "thin solid #000000"
+  sowing.style.display="none"
+  irrigation.style.display="none"
+  soilprep.style.display="none"
+  harvesting.style.display="none"
+  healthTextarea.style.display="none"
+  startbutton.style.display="none"
+  startbutton2.style.display="none"
+  plantdiagnose.style.display="none"
+  budgetTextarea.style.display="block"
+
+  let mytext = "Prepare an overall budget scheme among various tools,seeds,fertilizers and pesticides of"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "for the upcoming sowing season to grow"+" "+String(actcrop)+"whose budgets are"+" "+String(actprice)+" "+"per quintal";
+
+  if (mytext) {
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{ role: 'user', content: mytext }],
+                    temperature: 1.0,
+                    top_p: 0.7,
+                    n: 1,
+                    stream: false,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                budgetTextarea.value = data.choices[0].message.content;
+               
+            } else {
+                responseTextarea.value = 'Error: Unable to process your request.';
+            }
+        } catch (error) {
+            console.error(error);
+            responseTextarea.value = 'Error: Unable to process your request.';
+        }
+    }
 })
 
 canvpreview.style.display = "none"
@@ -775,6 +1409,74 @@ else{
 }
 })
 
+state.addEventListener("click",()=>{
+  if(getloccount == 0){
+  state.innerHTML = ""
+  }
+})
+
+district.addEventListener("click",()=>{
+  if(getloccount == 0){
+  district.innerHTML = ""
+  }
+})
+
+profilename.addEventListener("click",()=>{
+  profilename.innerHTML = ""
+})
+
+historytext.addEventListener("click",()=>{
+  historytext.innerHTML = ""
+})
+
+enterarea.addEventListener("click",()=>{
+  enterarea.innerHTML = ""
+})
+
+nextdiff.addEventListener("click", async(e)=>{
+  window.scrollTo(scrolltarget,0)
+  scrolltarget += screen.width
+  nextcounter+=1
+  e.preventDefault();
+
+  let mytext = "How to prepare a"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "for the upcoming sowing season to grow"+" "+String(actcrop);
+
+ if (mytext) {
+        try {
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: 'gpt-4',
+                    messages: [{ role: 'user', content: mytext }],
+                    temperature: 1.0,
+                    top_p: 0.7,
+                    n: 1,
+                    stream: false,
+                    presence_penalty: 0,
+                    frequency_penalty: 0,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                soilpreptext.value = data.choices[0].message.content;
+               
+            } else {
+                responseTextarea.value = 'Error: Unable to process your request.';
+            }
+        } catch (error) {
+            console.error(error);
+            responseTextarea.value = 'Error: Unable to process your request.';
+        }
+    }
+
+
+  
+})
 
 next.addEventListener("click",()=>{
 
@@ -801,7 +1503,9 @@ nextcounter+=1
 console.log(nextcounter)
 permstate = localStorage.getItem("state");
 permarea = localStorage.getItem("area")
-let mytext = "Give me an yearly planner for sowing crops in a"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "along with budget division among tools and crop seed price heading wise";
+// let mytext = "Give me an yearly planner for sowing crops in a"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "along with budget division in percentage along with rupees among tools and crop seed price heading wise in detail";
+
+let mytext = "Suggest me names of 5 crops most profitable to sow in"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ " the upcoming sowing season based on the previous crops sown being"+" "+historytext.value+""+"just give the names seperated by commas";
 
  if (mytext) {
         try {
@@ -825,7 +1529,40 @@ let mytext = "Give me an yearly planner for sowing crops in a"+" "+String(permar
 
             if (response.ok) {
                 const data = await response.json();
-                responseTextarea.value = data.choices[0].message.content;
+                chosencrop = data.choices[0].message.content;
+                let myarr = chosencrop.split(", ")
+                c1.innerHTML = myarr[0]
+                c2.innerHTML = myarr[1]
+                c3.innerHTML = myarr[2]
+                c4.innerHTML = myarr[3]
+                c5.innerHTML = myarr[4]
+
+                for(let i=0;i<=haryana.length;i++){
+                  if(haryana[i]==myarr[0]){
+                    p1.innerHTML = haryanaprice[i]
+                    // console.log(haryana[i])
+                  }
+                    else if(haryana[i]==myarr[1]){
+                    p2.innerHTML = haryanaprice[i]
+                  }
+                  else if(haryana[i]==myarr[2]){
+                    p3.innerHTML = haryanaprice[i]
+                  }
+                  else if(haryana[i]==myarr[3]){
+                    p3.innerHTML = haryanaprice[i]
+                  }
+                  else if(haryana[i]==myarr[4]){
+                    p4.innerHTML = haryanaprice[i]
+                  }
+                  else if(haryana[i]==myarr[5]){
+                    p5.innerHTML = haryanaprice[i]
+                  } 
+                }
+                
+                
+
+
+                console.log(myarr)
             } else {
                 responseTextarea.value = 'Error: Unable to process your request.';
             }
@@ -847,6 +1584,13 @@ nextcounter-=1
 console.log(nextcounter)
 })
 
+previousdiff.addEventListener("click",()=>{
+  window.scrollTo(-scrolltarget,0)
+scrolltarget -= screen.width
+if(nextcounter > 0){
+nextcounter-=1
+} 
+})
 
 myCanvas.style.display = "none"
 // marker.style.display = "none"
