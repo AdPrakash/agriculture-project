@@ -93,11 +93,11 @@
       <button id="startbutton2">Take photo</button>
       <button id="startbutton">Start Video</button>
       <div class="tile" id="soilprep">Land preparation<br><br>read more</div>
-      <textarea readonly id="soilpreptext" cols="40" rows="10" class="difftext"></textarea>
+      <textarea readonly class="difftext" id="soilpreptext" cols="40" rows="10" class="difftext"></textarea>
       <div class="tile" id="sowing">Sowing<br><br>read more</div>
-      <textarea readonly id="sowtext" cols="40" rows="10" class="difftext"></textarea>
+      <textarea readonly id="sowtext" class="difftext" cols="40" rows="10" class="difftext"></textarea>
       <div class="tile" id="irrigation">Irrigation and fertilisation<br><br>read more</div>
-      <textarea readonly id="irrtext" cols="40" rows="10" class="difftext"></textarea>
+      <textarea readonly id="irrtext" class="difftext" cols="40" rows="10" class="difftext"></textarea>
       <div class="tile" id="harvesting">Harvesting<br><br>read more</div>
       <textarea readonly id="harvesttext" class="difftext" cols="40" rows="10"></textarea>
       <div id="slider"></div>
@@ -160,11 +160,16 @@
       left: 4%;
       border-radius: 40px;
       width: 89%;
+      background-color: white;
       height: 79%;
       z-index: +1;
       font-size: x-large;
       
     }
+
+.tile{
+  color: black;
+}
 
     .diffbut{
       position: absolute;
@@ -206,6 +211,7 @@
       top: 30%;
       left: 1%;
       font-size: x-large;
+      color: black;
     }
 
 
@@ -288,6 +294,7 @@
     #historytext{
       position: absolute;
       top: 61.3%;
+      background-color: white;
       left: 5.5%;
       z-index: +1;
     }
