@@ -1027,7 +1027,8 @@ select3.addEventListener("click",()=>{
 })
 select4.addEventListener("click",()=>{
   actcrop = actcrop+" "+c4.innerHTML
-  actprice = actprice+","+String(p4.innerHTML)
+  //actprice = actprice+","+String(p4.innerHTML)
+  actprice = actprice+","+String(1000)
   console.log(actcrop)
 })
 select5.addEventListener("click",()=>{
@@ -1565,7 +1566,8 @@ let mytext = "Suggest me names of 5 crops most profitable to sow in"+" "+String(
                     p3.innerHTML = haryanaprice[i]
                   }
                   else if(haryana[i]==myarr[4]){
-                    p4.innerHTML = haryanaprice[i]
+                    // p4.innerHTML = haryanaprice[i]
+                    p4.innerHTML = "1000"
                   }
                   else if(haryana[i]==myarr[5]){
                     p5.innerHTML = haryanaprice[i]
