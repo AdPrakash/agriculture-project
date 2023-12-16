@@ -1007,6 +1007,7 @@ let select5 = document.getElementById("select5")
 let actcrop = ""
 let actprice = ""
 let budgetTextarea = document.getElementById("budgetTextarea")
+let slider = document.getElementById("slider")
 
 budgetTextarea.style.display="none"
 
@@ -1365,6 +1366,7 @@ budget.addEventListener("click",async()=>{
   startbutton.style.display="none"
   startbutton2.style.display="none"
   plantdiagnose.style.display="none"
+  slider.style.display = "none"
   budgetTextarea.style.display="block"
 
   let mytext = "Prepare an overall budget scheme among various tools,seeds,fertilizers and pesticides of"+" "+String(permarea)+" "+"metre square field in"+" "+permstate+" "+ "for the upcoming sowing season to grow"+" "+String(actcrop)+"whose budgets are"+" "+String(actprice)+" "+"per quintal";
